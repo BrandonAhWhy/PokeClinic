@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PokeClinic.Models;
+using System.Diagnostics;
+
+
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -12,9 +16,13 @@ namespace PokeClinic.Controllers.ApiV1
     {
         // GET api/user
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<User>> Get()
         {
-            return new string[] { "value1", "value2" };
+            // pokeDB.getConnection();
+            List<User> list = Models.User.SelectAll();
+            Console.Write("-----------------------------------------------------------\n");
+            Console.Write(list[0].Name);
+            return list;
         }
 
         // GET api/user/5

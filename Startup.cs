@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace PokeClinic
 {
@@ -18,6 +19,7 @@ namespace PokeClinic
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            pokeDB._ConnectionString = Configuration.GetConnectionString("Default");
         }
 
         public IConfiguration Configuration { get; }
