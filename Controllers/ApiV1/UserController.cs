@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PokeClinic.Controllers.ApiV1
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace PokeClinic.Controllers.ApiV1
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/users/5
+        // GET api/user/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
