@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
+using PokeClinic.DataAccess;
 using System.Diagnostics;
 
 
@@ -12,17 +13,20 @@ namespace PokeClinic.Controllers.ApiV1
 {
     [Route("api/v1/user")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Controller
     {
+        
+        UserRepository dbAccess;
+        public UserController(UserRepository repo){
+            dbAccess =  repo;
+        }
+
         // GET api/user
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            // pokeDB.getConnection();
-            List<User> list = Models.User.SelectAll();
-            Console.Write("-----------------------------------------------------------\n");
-            Console.Write(list[0].Name);
-            return list;
+            Console.WriteLine(dbAccess.Get(1).Name);
+            return null;
         }
 
         // GET api/user/5
