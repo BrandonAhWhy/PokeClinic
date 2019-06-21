@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
-public interface IRepository<T>
+namespace PokeClinic.Models
 {
-     void Add(T entity);
-     void Delete(T entity);
-     T Get(int id);
-     List<T> GetAll();
-     
+     public interface IRepository
+     {
+          Int64 Id { get; set; }
+          bool Add();
+          bool Update();
+          bool Delete();
+     }
 }

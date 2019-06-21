@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using PokeClinic.Models;
-using PokeClinic.DataAccess;
 using System.Diagnostics;
-
-
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PokeClinic.Models;
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -15,43 +13,41 @@ namespace PokeClinic.Controllers.ApiV1
     [ApiController]
     public class UserController : Controller
     {
-        
-        UserRepository dbAccess;
-        public UserController(UserRepository repo){
-            dbAccess =  repo;
-        }
-
         // GET api/user
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get()
+        public ActionResult Get()
         {
-            Console.WriteLine(dbAccess.Get(1).Name);
-            return null;
+            // For testing if you don't have a db setup
+            //return Json(new List<User> {new User { Id = 1, Name = "Bridge", Email = "lol@no.co", Password = "******" },});
+            return Json(Models.User.GetAll(25, 0));
         }
 
         // GET api/user/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return Json(Models.User.Get(id));
         }
 
         // POST api/user
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<string> Post([FromBody] string value)
         {
+            return "TODO";
         }
 
         // PUT api/user/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<string> Put(int id, [FromBody] string value)
         {
+            return "TODO";
         }
 
         // DELETE api/user/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<string> Delete(int id)
         {
+            return "TODO";
         }
     }
 }

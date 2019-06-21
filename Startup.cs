@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PokeClinic.Models;
-using PokeClinic.DataAccess;
 
 
 namespace PokeClinic
@@ -21,7 +20,7 @@ namespace PokeClinic
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            pokeDB._ConnectionString = Configuration.GetConnectionString("Default");
+            PokeDB._ConnectionString = Configuration.GetConnectionString("Default");
         }
 
         public IConfiguration Configuration { get; }
@@ -29,9 +28,8 @@ namespace PokeClinic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddTransient<UserRepository, UserRepository>();
-
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
