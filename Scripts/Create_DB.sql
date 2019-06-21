@@ -15,8 +15,5 @@ CONSTRAINT UQ_USER_EMAIL UNIQUE(email),
 CONSTRAINT UQ_USER_NAME UNIQUE(name)
 );
 
-INSERT INTO USER (name, email, password, date_created) VALUES ('datboi', 'datboi@datemail.com', 'dope', current_timestamp());
-
-commit;
-
-select * from user;
+INSERT INTO `user` (name, email, password, date_created) VALUES ('datboi', 'datboi@datemail.com', 'dope', current_timestamp());
+COMMIT;
