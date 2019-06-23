@@ -19,7 +19,7 @@ namespace PokeClinic.Models
         // CREATE
         public bool Add(User _user)
         {
-            string sql = "INSERT (name, email, password) VALUES (@Name, @Email, @Password)";
+            string sql = "INSERT INTO user (name, email, password) VALUES (@Name, @Email, @Password)";
             bool success = false;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
