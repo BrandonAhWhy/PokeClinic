@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -11,6 +12,7 @@ namespace PokeClinic.Controllers.ApiV1
     public class UserController : Controller
     {
         // GET api/user
+     
         [HttpGet]
         public ActionResult Get()
         {
@@ -20,6 +22,7 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         // GET api/user/5
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
@@ -45,6 +48,18 @@ namespace PokeClinic.Controllers.ApiV1
         public ActionResult<string> Delete(int id)
         {
             return "TODO";
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] User user)
+        {
+            Console.WriteLine(user.Email);
+            var token = Models.User.Authenticate(user.Email, user.Password);
+            if (token == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(token);
         }
     }
 }

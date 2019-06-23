@@ -4,6 +4,17 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Dapper;
 
+
+
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
+
 namespace PokeClinic.Models
 {
 
@@ -12,7 +23,6 @@ namespace PokeClinic.Models
         public Int64 Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        [JsonIgnore]
         public string Password { get; set; }
         public DateTime DateCreated { get; set; }
 
@@ -82,5 +92,21 @@ namespace PokeClinic.Models
             }
             return users;
         }
+
+        public static string Authenticate(string _email, string _password){
+            string sql = "SELECT * FROM user where email = @email AND password = @password ";
+            User user = null;
+
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                user = conn.QuerySingle<User>(sql, new { email = _email, password = _password });
+                if (user == null){
+                    return null;
+                }
+            }
+
+            return  Token.TokenController.GenToken(_email, user.Name);
+        }
+
     }
 }
