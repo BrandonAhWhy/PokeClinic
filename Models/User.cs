@@ -17,7 +17,7 @@ namespace PokeClinic.Models
         public DateTime DateCreated { get; set; }
 
         // CREATE
-        public bool Add(User _user)
+        public bool Add()
         {
             string sql = "INSERT INTO user (name, email, password) VALUES (@Name, @Email, @Password)";
             bool success = false;
