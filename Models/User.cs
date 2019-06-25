@@ -6,8 +6,7 @@ using Dapper;
 
 namespace PokeClinic.Models
 {
-
-    public class User
+    public class User 
     {
         public Int64 Id { get; set; }
         public string Name { get; set; }
@@ -19,9 +18,10 @@ namespace PokeClinic.Models
         // CREATE
         public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password) VALUES (@Name, @Email, @Password)";
+            string sql = "INSERT INTO user (name, email, password, date_created) VALUES (@Name, @Email, @Password, @DateCreated)";
             bool success = false;
 
+            this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 var affectedRows = conn.Execute(sql, this);
@@ -33,7 +33,20 @@ namespace PokeClinic.Models
         // UPDATE
         public bool Update()
         {
-            string sql = "UPDATE user SET name = @Name, email = @Email, password = @Password WHERE id = @Id";
+            string sql = "UPDATE user SET name = @Name, email = @Email WHERE id = @Id";
+            bool success = false;
+
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                var affectedRows = conn.Execute(sql, this);
+                success = (affectedRows > 0) ? true : false;
+            }
+            return success;
+        }
+
+        public bool UpdatePassword()
+        {
+            string sql = "UPDATE user SET password = @Password WHERE id = @Id";
             bool success = false;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -71,6 +84,18 @@ namespace PokeClinic.Models
             return user;
         }
 
+        public static User GetByName(string name)
+        {
+            string sql = "SELECT * FROM user WHERE name = @Name";
+            User user = null;
+
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                user = conn.QueryFirst<User>(sql, new { Name = name });
+            }
+            return user;
+        }
+
         public static IEnumerable<User> GetAll(Int64 limit, Int64 offset)
         {
             string sql = "SELECT * FROM user LIMIT @Limit OFFSET @Offset ";
@@ -81,6 +106,16 @@ namespace PokeClinic.Models
                 users = conn.Query<User>(sql, new { Offset = offset, Limit = limit });
             }
             return users;
+        }
+
+        public void hashPassword()
+        {
+            this.Password = PasswordHash.HashPassword(this.Password);
+        }
+
+        public bool validatePassword(string password)
+        {
+            return PasswordHash.ValidatePassword(password, this.Password);
         }
     }
 }
