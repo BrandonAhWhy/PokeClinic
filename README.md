@@ -12,3 +12,6 @@
  * Run sql scripts in "Scripts" directory of repo
  * Run `dotnet restore` in the root of the repository
  * Run `dotnet run` - Test url (https://localhost:5001/api/v1/user)
+
+### Postman collection
+ * Feel free to add stuff to the collection (PokeClinic.postman_collection.json)
