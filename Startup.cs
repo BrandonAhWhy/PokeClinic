@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using PokeClinic.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 
 namespace PokeClinic
 {
@@ -24,7 +26,8 @@ namespace PokeClinic
         {
             Configuration = configuration;
             PokeDB._ConnectionString = Configuration.GetConnectionString("Default");
-
+            //use for debugging token validation
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
             PokeDB.Secret = Configuration.GetSection("AppSettings")["Secret"].ToString();
         }
 
@@ -58,10 +61,14 @@ namespace PokeClinic
                     ValidateAudience = false
                 };
                 x.Events = new JwtBearerEvents
-                {
+                {                  
+                    OnMessageReceived = (MessageReceivedContext context) =>
+                    {
+                        return TokenController.PreTokenParser(ref context);
+                    },
                     OnAuthenticationFailed = context =>
                     {
-                        return Task.FromException(new Exception("An error occurred processing your authentication."));
+                        return Task.CompletedTask;
                     },
                     OnTokenValidated = context =>
                     {

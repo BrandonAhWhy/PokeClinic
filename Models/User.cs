@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Dapper;
+using Dapper.Contrib.Extensions;
 
 
 
@@ -17,21 +18,24 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace PokeClinic.Models
 {
-
-    public class User
+    public class User 
     {
         public Int64 Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string Email { get; set; }   
+        [JsonIgnore]
         public string Password { get; set; }
         public DateTime DateCreated { get; set; }
+        [WriteAttribute(false)]
+        public string Token { get; set;}
 
         // CREATE
-        public bool Add(User _user)
+        public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password) VALUES (@Name, @Email, @Password)";
+            string sql = "INSERT INTO user (name, email, password, date_created) VALUES (@Name, @Email, @Password, @DateCreated)";
             bool success = false;
 
+            this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 var affectedRows = conn.Execute(sql, this);
@@ -43,7 +47,20 @@ namespace PokeClinic.Models
         // UPDATE
         public bool Update()
         {
-            string sql = "UPDATE user SET name = @Name, email = @Email, password = @Password WHERE id = @Id";
+            string sql = "UPDATE user SET name = @Name, email = @Email WHERE id = @Id";
+            bool success = false;
+
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                var affectedRows = conn.Execute(sql, this);
+                success = (affectedRows > 0) ? true : false;
+            }
+            return success;
+        }
+
+        public bool UpdatePassword()
+        {
+            string sql = "UPDATE user SET password = @Password WHERE id = @Id";
             bool success = false;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -76,7 +93,31 @@ namespace PokeClinic.Models
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                user = conn.QueryFirst<User>(sql, new { Id = id });
+                try{
+                    user = conn.QueryFirst<User>(sql, new { Id = id });
+                }catch(Exception err){
+                    Console.WriteLine(err.Message);
+                    return null;
+                }
+               
+            }
+            return user;
+        }
+
+        public static User GetByName(string name)
+        {
+            string sql = "SELECT * FROM user WHERE name = @Name";
+            User user = null;
+
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                try{
+                    user = conn.QueryFirst<User>(sql, new { Name = name });
+                }catch(Exception err){
+                    Console.WriteLine(err.Message);
+                    return null;
+                }
+                
             }
             return user;
         }
@@ -93,20 +134,14 @@ namespace PokeClinic.Models
             return users;
         }
 
-        public static string Authenticate(string _email, string _password){
-            string sql = "SELECT * FROM user where email = @email AND password = @password ";
-            User user = null;
-
-            using (MySqlConnection conn = PokeDB.NewConnection())
-            {
-                user = conn.QuerySingle<User>(sql, new { email = _email, password = _password });
-                if (user == null){
-                    return null;
-                }
-            }
-
-            return  Token.TokenController.GenToken(_email, user.Name);
+        public void hashPassword()
+        {
+            this.Password = PasswordHash.HashPassword(this.Password);
         }
 
+        public bool validatePassword(string password)
+        {
+            return PasswordHash.ValidatePassword(password, this.Password);
+        }
     }
 }
