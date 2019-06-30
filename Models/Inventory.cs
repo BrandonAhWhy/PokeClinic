@@ -15,14 +15,16 @@ namespace PokeClinic
         public Int64 Id { get; set; }
         public string Name { get; set; }
         public Int64 ItemQuantity { get; set; }
-        public string ItemPrice { get; set; }
+        public string RestorationAmount { get; set; }
+
+        public string TypeLimitation {get; set; }
 
 
          public bool AddOrUpdate(Inventory _inventory)
         {
             string sqlFind = "SELECT * from inventory where name = @Name";
-            string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, itemPrice = @ItemPrice where Id = @Id";
-            string sql = "INSERT INTO inventory (name, itemQuantity, itemPrice) VALUES (@Name, @ItemQuantity, @ItemPrice)";
+            string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
+            string sql = "INSERT INTO inventory (name, itemQuantity, restorationAmount, typeLimitation) VALUES (@Name, @ItemQuantity, @RestorationAmount, @TypeLimitation )";
 
             bool success = false;
 
