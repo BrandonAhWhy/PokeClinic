@@ -15,3 +15,7 @@
 
 ### Postman collection
  * Feel free to add stuff to the collection (PokeClinic.postman_collection.json)
+
+ ### Debugger
+
+ * To setup the debugger, open the launch.json file and replace the "Program" line with this -> `"program": "${workspaceFolder}/bin/Debug/netcoreapp2.2/Pokeclinic.dll`

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 namespace PokeClinic.Models
 {
-     public interface IRepository
+     public interface IRepository<T>
      {
           Int64 Id { get; set; }
-          bool Add();
-          bool Update();
-          bool Delete();
+          void Add(T newEntity);
+          void Remove(T entity);
      }
 }

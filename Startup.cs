@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using PokeClinic.Models;
 
 
+
 namespace PokeClinic
 {
     public class Startup
@@ -28,7 +29,7 @@ namespace PokeClinic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
+                services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
