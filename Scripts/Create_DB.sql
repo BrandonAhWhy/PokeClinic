@@ -18,13 +18,14 @@ CONSTRAINT UQ_USER_NAME UNIQUE(name)
 CREATE TABLE inventory (
 id BIGINT NOT NULL AUTO_INCREMENT,
 name VARCHAR(255) NOT NULL,
-itemQuantity VARCHAR(255) NOT NULL,
-itemPrice VARCHAR(128) NOT NULL,
+itemQuantity int NOT NULL,
+restorationAmount int NOT NULL,
+typeLimitation VARCHAR(255) NOT NULL,
 CONSTRAINT PK_ITEM_ID PRIMARY KEY(id),
 CONSTRAINT UQ_ITEM_NAME UNIQUE(name)
 );
 
 INSERT INTO `user` (name, email, password, date_created) VALUES ('datboi', 'datboi@datemail.com', 'dope', current_timestamp());
-INSERT INTO `inventory` (name, itemQuantity, itemPrice) VALUES ('Health Potion', 10, '200');
+INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Health Potion', 10, 20, 'None');
 
 COMMIT;

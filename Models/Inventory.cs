@@ -18,31 +18,42 @@ namespace PokeClinic
         public string ItemPrice { get; set; }
 
 
-         public bool Add(Inventory _inventory)
+         public bool AddOrUpdate(Inventory _inventory)
         {
+            string sqlFind = "SELECT * from inventory where name = @Name";
+            string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, itemPrice = @ItemPrice where Id = @Id";
             string sql = "INSERT INTO inventory (name, itemQuantity, itemPrice) VALUES (@Name, @ItemQuantity, @ItemPrice)";
+
             bool success = false;
+
+            Inventory inventory = new Inventory();
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var affectedRows = conn.Execute(sql, new Inventory{
-                    Name = _inventory.Name,
-                    ItemPrice = _inventory.ItemPrice,
-                    ItemQuantity = _inventory.ItemQuantity
-                });
-                success = (affectedRows > 0) ? true : false;
+                try {
+                    inventory = conn.QueryFirst<Inventory>(sqlFind, _inventory);
+                    if (inventory != null) {
+                        inventory.ItemQuantity += _inventory.ItemQuantity;
+                        conn.Execute(sqlUpdate, inventory);
+                        return success = true;
+                    }
+                }
+                catch{
+                var affectedRows = conn.Execute(sql, this);
+                success = (affectedRows > 0) ? true : false;   
+                }
             }
             return success;
         }
         // READ
-        public static Inventory Get(int id)
+        public static Inventory Get(string name)
         {
-            string sql = "SELECT * FROM inventory WHERE id = @Id";
+            string sql = "SELECT * FROM inventory WHERE name = @Name";
             Inventory Inventory = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                Inventory = conn.QueryFirst<Inventory>(sql, new { Id = id });
+                Inventory = conn.QueryFirst<Inventory>(sql, new { Name = name });
             }
             return Inventory;
         }
