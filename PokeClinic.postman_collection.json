@@ -118,6 +118,101 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Inventory get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Inventory Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Items",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Name\": \"Greatball\",\r\n\t\"ItemQuantity\": \"10\",\r\n\t\"ItemPrice\": \"500\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory?",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Greatball",
+							"disabled": true
+						},
+						{
+							"key": "itemQuantity",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "itemPrice",
+							"value": "300",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
