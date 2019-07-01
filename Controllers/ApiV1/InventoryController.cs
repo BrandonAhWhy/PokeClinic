@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
+using PokeClinic.Repository;
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -14,22 +15,21 @@ namespace PokeClinic.Controllers.ApiV1
         // GET api/inventory
         [HttpGet]
         public ActionResult GetAll() {
-            return Json(Inventory.GetAll());
+            return Json(InventoryRepository.GetAll());
         }
 
         [HttpGet("{name}")]
         public ActionResult Get(string name)
         {
-            return Json(Inventory.Get(name));
+            return Json(InventoryRepository.Find(name));
         }
 
         
 
         // POST: api/inventory
-        [HttpPost]
+        [HttpPut]
         public ActionResult Add(Inventory inventory) {
-            var response =  new Inventory();
-            if (response.AddOrUpdate(inventory)){
+            if (InventoryRepository.AddOrUpdate(inventory)){
                 return Json("Added: "+ inventory.Name);
             }
 
