@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Specialized;
+using Microsoft.Extensions.Primitives;
+
+
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -23,29 +26,34 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         // GET api/user/5
-        [Authorize]
+        [BearerTokenFilter(Role="ADMIN",CheckUserID=true)]
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
+            // Console.Write(test);
+            var test2=(HttpContext);
             return Json(Models.User.Get(id));
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public ActionResult Register()
         {
+            Console.Write(ModelState);
             User user = new User {
                 Name = Request.Form["name"],
                 Email = Request.Form["email"],
                 Password = Request.Form["password"]
             };
-            user.hashPassword();
-            if (user.Add())
-                return Json(user);
-            return (Json(new {Status = "Error", Message = "Something went wrong."}));
+            if (Models.User.GetByName(user.Name) == null){
+                user.hashPassword();
+                if (user.Add())
+                    return Json(user);
+                return (Json(new {Status = "Error", Message = "Something went wrong."}));
+            }else{
+                return BadRequest("Username already exists");
+            }
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult Login()
         {
@@ -55,12 +63,14 @@ namespace PokeClinic.Controllers.ApiV1
             if (user.validatePassword(Request.Form["password"]))
             {
                 //gen user token (null if failed)
-                user.Token = Models.TokenController.GenToken(user.Email, user.Name);
+                user.Token = Models.TokenController.GenToken(user);
                 // Create user session
                 return Json(user);
             }
             return StatusCode(401, "Invalid username/password");
         }
+
+        
 
         // PUT api/user/5
         [HttpPut("{id}")]

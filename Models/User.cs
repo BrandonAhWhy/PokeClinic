@@ -18,6 +18,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace PokeClinic.Models
 {
+
+    public enum USER_ROLE: int{
+        USER = 0,
+        ADMIN = 1
+    }
+
     public class User 
     {
         public Int64 Id { get; set; }
@@ -28,6 +34,8 @@ namespace PokeClinic.Models
         public DateTime DateCreated { get; set; }
         [WriteAttribute(false)]
         public string Token { get; set;}
+        public int Role {get; set;}
+
 
         // CREATE
         public bool Add()

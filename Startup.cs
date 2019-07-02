@@ -14,9 +14,11 @@ using Microsoft.Extensions.Options;
 using PokeClinic.Models;
 
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
+// using System.Text;
+ using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authentication;
 
 namespace PokeClinic
 {
@@ -36,47 +38,7 @@ namespace PokeClinic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-
-            // configure jwt authentication
-
-            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings")["Secret"].ToString());
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-                x.Events = new JwtBearerEvents
-                {                  
-                    OnMessageReceived = (MessageReceivedContext context) =>
-                    {
-                        return TokenController.PreTokenParser(ref context);
-                    },
-                    OnAuthenticationFailed = context =>
-                    {
-                        return Task.CompletedTask;
-                    },
-                    OnTokenValidated = context =>
-                    {
-                        Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,7 +53,8 @@ namespace PokeClinic
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseAuthentication();
+
+            // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
