@@ -47,6 +47,30 @@ namespace PokeClinic
             }
             return success;
         }
+
+        //DELETE
+        public bool Delete(Int64 id){
+            string sqlFind = "SELECT * from inventory  WHERE Id = @Id";
+            string sqlDelete = "DELETE FROM inventory WHERE Id = @Id";
+            Inventory inventory = new Inventory();
+            bool success = false;
+            using (MySqlConnection conn = PokeDB.NewConnection()){
+                try{
+                    inventory = conn.QueryFirst<Inventory>(sqlFind,new {Id = id});
+                    if(inventory != null){
+                        conn.Execute(sqlDelete, new {Id = id});
+                        return true;
+                    }
+                }
+                catch{
+                    var affectedRows = conn.Execute(sqlDelete, this);
+                    success = (affectedRows > 0) ? true : false; 
+                }
+            }
+            return success;
+        }
+
+
         // READ
         public static Inventory Get(string name)
         {

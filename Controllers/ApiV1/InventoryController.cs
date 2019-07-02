@@ -37,5 +37,17 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
 
+        //DELETE: api/inventory
+        [HttpDelete("{id}")]
+        public ActionResult Delete(Int64 id){
+            var response = new Inventory();
+            if (response.Delete(id)){
+                return Json("Removed item: "+ id);
+            }
+
+            return RedirectToAction("/");
+        };
+
+
     }
 }
