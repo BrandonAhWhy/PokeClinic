@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
-using PokeClinic.Repository;
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -14,25 +14,22 @@ namespace PokeClinic.Controllers.ApiV1
         
         // GET api/inventory
         [HttpGet]
-        public ActionResult GetAll() {
-            return Json(InventoryRepository.GetAll());
+        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll() {
+            return Ok(await Inventory.GetAll());
         }
 
         [HttpGet("{name}")]
-        public ActionResult Get(string name)
+        public async Task<ActionResult<Inventory>> Get(string name)
         {
-            return Json(InventoryRepository.Find(name));
+            return Ok(await Inventory.Find(name));
         }
-
-        
 
         // POST: api/inventory
         [HttpPut]
-        public ActionResult Add(Inventory inventory) {
-            if (InventoryRepository.AddOrUpdate(inventory)){
+        public async Task<ActionResult<bool>> Add(Inventory inventory) {
+            if (await Inventory.AddOrUpdate(inventory)) {
                 return Json("Added: "+ inventory.Name);
             }
-
             return RedirectToAction("/");
         }
 

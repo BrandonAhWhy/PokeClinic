@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;  
 using System.Data;  
 using System.Data.SqlClient;  
+using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;  
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -12,7 +13,9 @@ namespace PokeClinic.Repository {
 
     public class InventoryRepository
     {
-         public static bool AddOrUpdate(Inventory _inventory)
+
+
+         public static async Task<bool> AddOrUpdate(Inventory _inventory)
         {
             string sqlFind = "SELECT * from inventory where name = @Name";
             string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
@@ -25,7 +28,7 @@ namespace PokeClinic.Repository {
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try {
-                    inventory = conn.QueryFirst<Inventory>(sqlFind, _inventory);
+                    inventory = await conn.QueryFirstAsync<Inventory>(sqlFind, _inventory);
                     if (inventory != null) {
                         inventory.ItemQuantity += _inventory.ItemQuantity;
                         conn.Execute(sqlUpdate, inventory);
@@ -40,28 +43,26 @@ namespace PokeClinic.Repository {
             return success;
         }
         // READ
-        public static Inventory Find(string name)
+        public static async Task<Inventory> Find(string name)
         {
             string sql = "SELECT * FROM inventory WHERE name = @Name";
             Inventory Inventory = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                Inventory = conn.QueryFirst<Inventory>(sql, new { name = name });
+                Inventory = await conn.QueryFirstAsync<Inventory>(sql, new { name = name });
             }
             return Inventory;
         }
 
-        public static IEnumerable<Inventory> GetAll()
+        public static async Task<IEnumerable<Inventory>> GetAll()
         {
             string sql = "SELECT * FROM inventory";
-            IEnumerable<Inventory> inventory = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                inventory = conn.Query<Inventory>(sql);
+                return await conn.QueryAsync<Inventory>(sql);
             }
-            return inventory;
         }
 
         // public static Inventory Remove(string name) {
