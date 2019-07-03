@@ -26,7 +26,7 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         // GET api/user/5
-        [BearerTokenFilter(Role="ADMIN",CheckUserID=true)]
+        [BearerTokenFilter]
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {

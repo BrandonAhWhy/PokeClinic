@@ -23,22 +23,22 @@ namespace PokeClinic.Models
     {
         private StringValues _token;
 
-        public string Role{get ; set ;}
-        public bool CheckUserID{get; set;}
+        public bool authAdmin{get ; set ;}
+        public bool authID{get; set;}
 
 
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
             try{
-                int _Role = 0;
                 int userRole = -1;
                 int userId = -1;
-                if (Role == "ADMIN")
-                    _Role = (int)USER_ROLE.ADMIN;
+
                 //get request ID to validate
                 int reqID = int.Parse(actionContext.RouteData.Values["id"].ToString());
                 //get Auth token and trim
                 var authHeader = actionContext.HttpContext.Request.Headers.TryGetValue("Authorization", out _token);
+                if (!authHeader)
+                    throw(new Exception("Failed to get Authorization headers from request"));
                 string token = _token[0].Replace("Bearer","").Trim();
                 ClaimsPrincipal principal = TokenController.ValidateToken(token);
                 //mapping claims from decoded jwt
@@ -52,34 +52,19 @@ namespace PokeClinic.Models
                     }
                 } 
                 //check if role is valid
-                if ((int)USER_ROLE.ADMIN == _Role &&  (int)USER_ROLE.ADMIN != userRole){
+                if (authAdmin && (int)USER_ROLE.ADMIN != userRole){
                     actionContext.Result =  new UnauthorizedResult();
                 }
-                //check if user ID is valid 
-                if (CheckUserID && userId != reqID){
+                //check if user ID is valid
+                if (!authAdmin && authID && userId != reqID) { 
                     actionContext.Result =  new UnauthorizedResult();
                 }
 
             }catch(Exception err){
                 //return 500  with exception message here!(failed to parse token)
+                Console.Write("ValidateToken Exception Thrown : " + err.Message);
                 actionContext.Result =  new UnauthorizedResult();
             }
-        }
-    }
-    public class ErrorDetails
-    {
-        public ErrorDetails(int _statusCode, string _Message)
-        {
-            StatusCode = _statusCode;
-            Message = _Message;
-        }
-        public int StatusCode { get; set; }
-        public string Message { get; set; }
-
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
         }
     }
 
@@ -123,11 +108,10 @@ namespace PokeClinic.Models
                 {
                     return claims;
                 }
-                return null;
+                 throw new Exception("ClaimsPrincipal is [null]: failed to parse claims");
             }
             catch (Exception err)
             {
-                Console.Write("ValidateToken Exception Thrown : " + err.Message);
                 throw err;
             }
         }
