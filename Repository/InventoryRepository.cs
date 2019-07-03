@@ -13,8 +13,6 @@ namespace PokeClinic.Repository {
 
     public class InventoryRepository
     {
-
-
          public static async Task<bool> AddOrUpdate(Inventory _inventory)
         {
             string sqlFind = "SELECT * from inventory where name = @Name";
@@ -65,7 +63,7 @@ namespace PokeClinic.Repository {
             }
         }
 
-        // public static Inventory Remove(string name) {
+        // public static async Inventory Remove(string name) {
         // }
     }
 }
