@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
+using Microsoft.AspNetCore.Authorization;
 using System.Collections.Specialized;
+using Microsoft.Extensions.Primitives;
+
+
 
 namespace PokeClinic.Controllers.ApiV1
 {
@@ -12,6 +16,7 @@ namespace PokeClinic.Controllers.ApiV1
     public class UserController : Controller
     {
         // GET api/user
+     
         [HttpGet]
         public ActionResult GetAll()
         {
@@ -21,40 +26,51 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         // GET api/user/5
+        [BearerTokenFilter]
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
+            // Console.Write(test);
+            var test2=(HttpContext);
             return Json(Models.User.Get(id));
         }
 
         [HttpPost("register")]
         public ActionResult Register()
         {
+            Console.Write(ModelState);
             User user = new User {
                 Name = Request.Form["name"],
                 Email = Request.Form["email"],
                 Password = Request.Form["password"]
             };
-            user.hashPassword();
-            if (user.Add())
-                return Json(user);
-            return (Json(new {Status = "Error", Message = "Something went wrong."}));
+            if (Models.User.GetByName(user.Name) == null){
+                user.hashPassword();
+                if (user.Add())
+                    return Json(user);
+                return (Json(new {Status = "Error", Message = "Something went wrong."}));
+            }else{
+                return BadRequest("Username already exists");
+            }
         }
 
         [HttpPost("login")]
         public ActionResult Login()
         {
             User user = Models.User.GetByName(Request.Form["name"]);
-
             if (user == null)
                 return StatusCode(404, "Invalid username/password");
             if (user.validatePassword(Request.Form["password"]))
             {
+                //gen user token (null if failed)
+                user.Token = Models.TokenController.GenToken(user);
                 // Create user session
                 return Json(user);
             }
             return StatusCode(401, "Invalid username/password");
         }
+
+        
 
         // PUT api/user/5
         [HttpPut("{id}")]
