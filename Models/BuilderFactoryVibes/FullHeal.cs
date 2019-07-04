@@ -1,29 +1,28 @@
-using System;
 
 namespace PokeClinic.Models.BuilderFactoryVibes {
     public class FullHeal {
 
-        public static void main(){
-            IRestoreBuilder healAll = new PotionRestorerBuilder ();
-            IRestoreBuilder healFire = new OranRestorerBuilder ();
-            IRestoreBuilder healWater = new SitrusRestorerBuilder ();
+        // public static void main(){
+        //     IRestoreBuilder healAll = new PotionRestorerBuilder ();
+        //     IRestoreBuilder healFire = new OranRestorerBuilder ();
+        //     IRestoreBuilder healWater = new SitrusRestorerBuilder ();
 
-            RestorerDirector rd = new RestorerDirector (healAll);
-            rd.makeRestorer ();
-            RestoreItem itemAll = rd.getRestoreItem ();
+        //     RestorerDirector rd = new RestorerDirector (healAll);
+        //     rd.makeRestorer ();
+        //     RestoreItem itemAll = rd.getRestoreItem ();
 
-            rd.setRestorerFormat (healFire);
-            rd.makeRestorer();
-            RestoreItem itemFire = rd.getRestoreItem ();
+        //     rd.setRestorerFormat (healFire);
+        //     rd.makeRestorer();
+        //     RestoreItem itemFire = rd.getRestoreItem ();
 
-            rd.setRestorerFormat (healWater);
-            rd.makeRestorer ();
-            RestoreItem itemWater = rd.getRestoreItem ();
+        //     rd.setRestorerFormat (healWater);
+        //     rd.makeRestorer ();
+        //     RestoreItem itemWater = rd.getRestoreItem ();
 
-            Console.WriteLine ("All:", itemAll);
-            Console.WriteLine ("Fire:", itemFire);
-            Console.WriteLine ("Water:", itemWater);
-        }
+        //     Console.WriteLine ("All:", itemAll);
+        //     Console.WriteLine ("Fire:", itemFire);
+        //     Console.WriteLine ("Water:", itemWater);
+        // }
 
     }
 }

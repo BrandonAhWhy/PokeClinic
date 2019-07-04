@@ -11,22 +11,27 @@ namespace PokeClinic.Controllers.ApiV1
     [ApiController]
     public class InventoryController: Controller
     {
-        
+        private  Inventory Inventory;
         // GET api/inventory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll() {
+        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll() 
+        {
+            Inventory = new Inventory();
             return Ok(await Inventory.GetAll());
         }
 
         [HttpGet("{name}")]
         public async Task<ActionResult<Inventory>> Get(string name)
         {
+            Inventory = new Inventory();
             return Ok(await Inventory.Find(name));
         }
 
-        // POST: api/inventory
+        // PUT: api/inventory
         [HttpPut]
-        public async Task<ActionResult<bool>> Add(Inventory inventory) {
+        public async Task<ActionResult<bool>> Add([FromBody]Inventory inventory) 
+        {
+            Inventory = new Inventory();
             if (await Inventory.AddOrUpdate(inventory)) {
                 return Json("Added: "+ inventory.Name);
             }

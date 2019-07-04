@@ -11,9 +11,9 @@ using Dapper;
 
 namespace PokeClinic.Repository {
 
-    public class InventoryRepository
+    public class InventoryRepository :IRepository<Inventory> 
     {
-         public static async Task<bool> AddOrUpdate(Inventory _inventory)
+         public async Task<bool> AddOrUpdate(Inventory _inventory)
         {
             string sqlFind = "SELECT * from inventory where name = @Name";
             string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
@@ -41,7 +41,7 @@ namespace PokeClinic.Repository {
             return success;
         }
         // READ
-        public static async Task<Inventory> Find(string name)
+        public async Task<Inventory> Find(string name)
         {
             string sql = "SELECT * FROM inventory WHERE name = @Name";
             Inventory Inventory = null;
@@ -53,13 +53,14 @@ namespace PokeClinic.Repository {
             return Inventory;
         }
 
-        public static async Task<IEnumerable<Inventory>> GetAll()
+        public async Task<IEnumerable<Inventory>> GetAll()
         {
             string sql = "SELECT * FROM inventory";
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                return await conn.QueryAsync<Inventory>(sql);
+                var InventoryCollection =  await conn.QueryAsync<Inventory>(sql);
+                return InventoryCollection;
             }
         }
 
