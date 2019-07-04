@@ -19,3 +19,7 @@
  ### Debugger
 
  * To setup the debugger, open the launch.json file and replace the "Program" line with this -> `"program": "${workspaceFolder}/bin/Debug/netcoreapp2.2/Pokeclinic.dll`
+
+ ### Swagger
+
+ * Navigate to https://localhost:5001/swagger/v1/swagger.json to see the JSON file or to https://localhost:5001/swagger to see the swaggerUI

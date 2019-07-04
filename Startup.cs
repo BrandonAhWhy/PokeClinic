@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using PokeClinic.Models;
-
-
+using Microsoft.OpenApi.Models;
 
 namespace PokeClinic
 {
@@ -22,6 +19,9 @@ namespace PokeClinic
         {
             Configuration = configuration;
             PokeDB._ConnectionString = Configuration.GetConnectionString("Default");
+            //use for debugging token validation
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+            PokeDB.Secret = Configuration.GetSection("AppSettings")["Secret"].ToString();
         }
 
         public IConfiguration Configuration { get; }
@@ -31,11 +31,17 @@ namespace PokeClinic
         {
                 services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+                  services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSwagger();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,7 +51,11 @@ namespace PokeClinic
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+            // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

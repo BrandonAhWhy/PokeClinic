@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
@@ -10,24 +11,28 @@ namespace PokeClinic.Controllers.ApiV1
     [ApiController]
     public class InventoryController: Controller
     {
-        
+        private  Inventory Inventory;
         // GET api/inventory
         [HttpGet]
-        public ActionResult GetAll() {
-            return Json(Inventory.GetAll());
+        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll() 
+        {
+            Inventory = new Inventory();
+            return Ok(await Inventory.GetAll());
         }
 
         [HttpGet("{name}")]
-        public ActionResult Get(string name)
+        public async Task<ActionResult<Inventory>> Find(string name)
         {
-            return Json(Inventory.Get(name));
-        }        
+            Inventory = new Inventory();
+            return Ok(await Inventory.Find(name));
+        }
 
-        // POST: api/inventory
-        [HttpPost]
-        public ActionResult Add(Inventory inventory) {
-            var response =  new Inventory();
-            if (response.AddOrUpdate(inventory)){
+        // PUT: api/inventory
+        [HttpPut]
+        public async Task<ActionResult<bool>> Add([FromBody]Inventory inventory) 
+        {
+            Inventory = new Inventory();
+            if (await Inventory.AddOrUpdate(inventory)) {
                 return Json("Added: "+ inventory.Name);
             }
 
@@ -36,16 +41,14 @@ namespace PokeClinic.Controllers.ApiV1
 
 
         //DELETE: api/inventory
-        [HttpDelete("{id}")]
-        public ActionResult Delete(Int64 id){
-            var response = new Inventory();
-            if (response.Delete(id)){
-                return Json("Removed item: "+ id);
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<bool>> Delete(string name){
+            Inventory = new Inventory();
+            if (await Inventory.Delete(name)){
+                return Json("Removed item: "+ name);
             }
 
             return RedirectToAction("/");
         }
-
-
     }
 }
