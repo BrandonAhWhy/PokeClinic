@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc; 
 using PokeClinic.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Specialized;
-using Microsoft.Extensions.Primitives;
 
 
 
@@ -26,7 +21,7 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         // GET api/user/5
-        [BearerTokenFilter]
+        [BearerTokenFilter(authAdmin=true, authID=true)]
         [HttpGet("{id}")]
         public ActionResult<Models.User> Get(int id)
         {

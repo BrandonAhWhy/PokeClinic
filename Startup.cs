@@ -10,23 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using PokeClinic.Models;
-
-using Microsoft.IdentityModel.Tokens;
-// using System.Text;
- using Microsoft.AspNetCore.Authentication.JwtBearer;
-// using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Authentication;
-
-using Microsoft.IdentityModel.Tokens;
-// using System.Text;
- using Microsoft.AspNetCore.Authentication.JwtBearer;
-// using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Authentication;
 
 namespace PokeClinic
 {
