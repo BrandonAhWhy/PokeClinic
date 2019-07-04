@@ -54,7 +54,6 @@ namespace PokeClinic
                 app.UseHsts();
             }
 
-            // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

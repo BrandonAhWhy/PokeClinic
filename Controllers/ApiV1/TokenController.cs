@@ -1,25 +1,17 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PokeClinic.Models;
 using Microsoft.Extensions.Primitives;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PokeClinic.Models
 {
 
-    internal class BearerTokenFilter : ActionFilterAttribute
+    class BearerTokenFilter : ActionFilterAttribute
     {
         private StringValues _token;
 
@@ -54,16 +46,20 @@ namespace PokeClinic.Models
                 //check if role is valid
                 if (authAdmin && (int)USER_ROLE.ADMIN != userRole){
                     actionContext.Result =  new UnauthorizedResult();
+
                 }
                 //check if user ID is valid
                 if (!authAdmin && authID && userId != reqID) { 
                     actionContext.Result =  new UnauthorizedResult();
                 }
 
-            }catch(Exception err){
-                //return 500  with exception message here!(failed to parse token)
-                Console.Write("ValidateToken Exception Thrown : " + err.Message);
-                actionContext.Result =  new UnauthorizedResult();
+            }
+            catch (Exception err)
+            {
+                ExceptionHandler handler = new HandleArgumentException(ref actionContext);
+                handler.RegisterNext(new TokenExpiredException(ref actionContext));
+                handler.HandleException(err);
+
             }
         }
     }
@@ -91,9 +87,7 @@ namespace PokeClinic.Models
         {
             try
             {
-                //this will throw an error if it cannot parse the token
                 SecurityToken _jwt = new JwtSecurityToken(base_64_token);
-
                 var handler = new JwtSecurityTokenHandler();
                 TokenValidationParameters _validation = new TokenValidationParameters
                 {
@@ -108,12 +102,13 @@ namespace PokeClinic.Models
                 {
                     return claims;
                 }
-                 throw new Exception("ClaimsPrincipal is [null]: failed to parse claims");
+                throw new Exception("ClaimsPrincipal is [null]: failed to parse claims");
             }
-            catch (Exception err)
-            {
+            catch(Exception err){
                 throw err;
             }
+
+
         }
         public static string GenToken(User _user)
         {

@@ -34,20 +34,25 @@ namespace PokeClinic.Models
         public DateTime DateCreated { get; set; }
         [WriteAttribute(false)]
         public string Token { get; set;}
-        public int Role {get; set;}
+        public int Role {get; set;} = 0;
 
 
         // CREATE
         public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password, date_created) VALUES (@Name, @Email, @Password, @DateCreated)";
+            string sql = "INSERT INTO user (name, email, password, date_created, role) VALUES (@Name, @Email, @Password, @DateCreated, @Role)";
             bool success = false;
 
             this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var affectedRows = conn.Execute(sql, this);
-                success = (affectedRows > 0) ? true : false;
+                try {
+                    var affectedRows = conn.Execute(sql, this);
+                    success = (affectedRows > 0) ? true : false;
+                }catch(Exception err){
+                    Console.Write("SQL ADD ERR: " + err.Message);
+                    return false;
+                }
             }
             return success;
         }
