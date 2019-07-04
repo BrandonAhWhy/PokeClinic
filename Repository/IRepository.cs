@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;  
 using System.Collections.Generic;  
 using System.Linq;  
@@ -17,4 +18,17 @@ namespace PokeClinic.Repository
         Task<T> Find(string Entity);
         Task<IEnumerable<T>> GetAll();
     }
+=======
+using System;
+using System.Collections.Generic;
+
+namespace PokeClinic.Models
+{
+     public interface IRepository<T>
+     {
+          Int64 Id { get; set; }
+          void Add(T newEntity);
+          void Remove(T entity);
+     }
+>>>>>>> testing/Mikhail_Inventory-Read
 }
