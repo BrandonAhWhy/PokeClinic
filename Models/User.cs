@@ -40,9 +40,10 @@ namespace PokeClinic.Models
         // CREATE
         public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password, date_created) VALUES (@Name, @Email, @Password, @DateCreated)";
+            string sql = "INSERT INTO user (name, email, password, date_created, role) VALUES (@Name, @Email, @Password, @DateCreated, @Role)";
             bool success = false;
 
+            this.Role = 1;
             this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
