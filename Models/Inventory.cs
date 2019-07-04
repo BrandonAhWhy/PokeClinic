@@ -2,15 +2,8 @@ using System;
 using System.Collections.Generic;  
 using System.Threading.Tasks;
 using PokeClinic.Repository;
-using System.Linq;  
-using System.Data;  
-using System.Data.SqlClient;  
-using System.ComponentModel.DataAnnotations;  
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using Dapper;
 
-namespace PokeClinic
+namespace PokeClinic.Models
 {
     public class Inventory {
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;  
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
+using PokeClinic.Models;
 using Dapper;
 
 namespace PokeClinic.Repository {
