@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PokeClinic.Models.BuilderFactoryVibes;
 
 namespace PokeClinic
 {
@@ -22,7 +23,7 @@ namespace PokeClinic
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
         
-        private void runBuilderFactoryVibes(){
+        private static  void runBuilderFactoryVibes(){
             IRestoreBuilder healAll = new PotionRestorerBuilder ();
             IRestoreBuilder healFire = new OranRestorerBuilder ();
             IRestoreBuilder healWater = new SitrusRestorerBuilder ();
