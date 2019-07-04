@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using Microsoft.AspnetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PokeClinic.Models;
 
 namespace PokeClinic.Controllers.ApiV1

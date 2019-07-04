@@ -23,9 +23,9 @@ namespace PokeClinic.Repository
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 while(!foundSlot) {
-                    int dayCount = await Find(_schedule.Day);
+                     Int64 dayCount = await FindCount(_schedule.Day);
                     if(dayCount >= 3) {
-                        return;
+                        break;
                     } else {
                         var affectedRows = await conn.ExecuteAsync(sql, _schedule);
                         success = (affectedRows > 0) ? true : false;
@@ -37,11 +37,11 @@ namespace PokeClinic.Repository
         }
 
         public async Task<Schedule> Find(Int64 Day) {
-            string sql = "COUNT day FROM schedule WHERE day = @Day";
+            string sql = "SELECT * FROM schedule WHERE day = @Day";
             Schedule Schedule = null;
 
-            using (MySqlConnect conn = PokeDB.NewConnection()) {
-                Schedule = await conn.QueryFirstAsync<Schedule>(sql, new { Id = Id});
+            using (MySqlConnection conn = PokeDB.NewConnection()) {
+                Schedule = await conn.QueryFirstAsync<Schedule>(sql, new { Day = Day});
             }
             return Schedule;
         }
@@ -54,6 +54,16 @@ namespace PokeClinic.Repository
                 Schedule = await conn.QueryFirstAsync<Schedule>(sql, new { name = name});
             }
             return Schedule;
+        }
+
+        public async Task<Int64> FindCount(Int64 Day) {
+            string sql = "COUNT day FROM schedule WHERE day = @Day";
+            Int64 count = 0;
+
+            using(MySqlConnection conn = PokeDB.NewConnection()) {
+                count = await conn.QueryFirstAsync<Int64>(sql, new {Day = Day});
+            }
+            return count;
         }
 
         public async Task<IEnumerable<Schedule>> GetAll() {
@@ -72,6 +82,22 @@ namespace PokeClinic.Repository
             using (MySqlConnection conn = PokeDB.NewConnection()) {
                 try {
                     schedule = await Find(name);
+                    var affectedRows = await conn.ExecuteAsync(sqlDelete, schedule);
+                    success = (affectedRows > 0) ? true : false;
+                } catch {
+                    return success;
+                }
+            }
+            return success;
+        }
+
+        public async Task<bool> Delete(Int64 day) {
+            string sqlDelete = "DELETE FROM schedule WHERE Id = @Id";
+            bool success = false;
+            Schedule schedule = new Schedule();
+            using (MySqlConnection conn = PokeDB.NewConnection()) {
+                try {
+                    schedule = await Find(day);
                     var affectedRows = await conn.ExecuteAsync(sqlDelete, schedule);
                     success = (affectedRows > 0) ? true : false;
                 } catch {
