@@ -9,8 +9,10 @@ namespace PokeClinic.Models
     public class TreatmentHandler
     {
         public static TreatmentReturn getAvailibleTreatment(string type) {
-            ITreatment treatment = Restoration.getTreatment(type);
-            string[] treatmentItems = treatment.getNeededItems();
+            Console.WriteLine("Type " + type);
+            Restoration restoration = new Restoration();
+
+            string[] treatmentItems = restoration.getTreatmentItems(type);
             TreatmentReturn returnVal = new TreatmentReturn();
 
 
@@ -26,16 +28,25 @@ namespace PokeClinic.Models
             sql += ')';
             
             Inventory[] availableItems = inventorySqlRunner(sql);
-            foreach (Inventory item in availableItems)
+            foreach (string item in treatmentItems)
             {
-                Console.WriteLine(item.Name + " "+ item.ItemQuantity);
-                if (item.ItemQuantity <= 0)
+                bool contained = false;
+                foreach(Inventory invItem in availableItems){
+                    if(invItem.Name.Equals(item))
+                        contained = true;
+                }
+                
+                if (!contained)
                 {
                     returnVal.available = false;
-                    returnVal.items.Append(item.Name);
+                    // Code to copy the old array of needed items and add another item -> should become a list
+                    string[] newItems = new string[returnVal.items.Length + 1];
+                    Array.Copy(returnVal.items, newItems, returnVal.items.Length);
+                    newItems[returnVal.items.Length] = item;
+                    returnVal.items = newItems;
                 }
             }
-            Console.WriteLine(returnVal.available);
+
             if(returnVal.available){
                 returnVal.items = treatmentItems;
             }
