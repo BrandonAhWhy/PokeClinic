@@ -26,8 +26,20 @@ CONSTRAINT PK_ITEM_ID PRIMARY KEY(id),
 CONSTRAINT UQ_ITEM_NAME UNIQUE(name)
 );
 
+CREATE TABLE `order`(
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  item_id BIGINT NOT NULL,
+  quantity INT NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY(item_id) REFERENCES inventory(id)
+);
+
+CREATE TABLE schedule(
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  day INT NOT NULL,
+  PRIMARY KEY(id)
+);
 
 INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Health Potion', 10, 20, 'None');
---password is 'dope'
 INSERT INTO `user` (name, email, password, date_created, role) VALUES ('datboi', 'datboi@datemail.com', '$2a$12$t4QQoP18ZAb/8yKBnYOTPu5.hFU4mAJUy.pVJGhhzrEsC6un/OPXy', current_timestamp(), 1);
 COMMIT;
