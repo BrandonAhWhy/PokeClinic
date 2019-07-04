@@ -1,0 +1,276 @@
+{
+	"info": {
+		"_postman_id": "8f807c51-6666-4b7e-bcb3-e807537ed5b2",
+		"name": "pokeTreatmentCentre",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "fire type api request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/treatment/fire",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"treatment",
+						"fire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inventory get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inventory get by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory/cheri",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory",
+						"cheri"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inventory put item",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Id\": 10,\n\t\"Name\": \"Cheri\",\n\t\"ItemQuantity\": 10,\n\t\"RestorationAmount\": \"100\",\n\t\"TypeLimitation\": \"grass\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inventory delete item",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory/cheri",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory",
+						"cheri"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user/0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Name\": \"naufumi\",\n\t\"Email\": \"naufumi@shield.jp\",\n\t\"Password\": \"RaphtaliaAndFilo\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user/register",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Name\" : \"naufumi\",\n\t\"Password\" : \"RaphtaliaAndFilo\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user update",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjIiLCJFbWFpbCI6Im5hdWZ1bWlAc2hpZWxkLmpwIiwiTmFtZSI6Im5hdWZ1bWkiLCJSb2xlIjoiMSIsIm5iZiI6MTU2MjI3ODI0MywiZXhwIjoxNTYyMjgxODQzLCJpYXQiOjE1NjIyNzgyNDN9.WpRZg6mBTi9wQJZXf6QYD1Vm89yeCzuMS1652165tU4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Name\": \"Jonathan Jostar\",\n\t\"Email\": \"jojo@adventure.jp\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
