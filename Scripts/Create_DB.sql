@@ -15,6 +15,19 @@ CONSTRAINT PK_USER_ID PRIMARY KEY(id),
 CONSTRAINT UQ_USER_EMAIL UNIQUE(email),
 CONSTRAINT UQ_USER_NAME UNIQUE(name)
 );
+
+CREATE TABLE inventory (
+id BIGINT NOT NULL AUTO_INCREMENT,
+name VARCHAR(255) NOT NULL,
+itemQuantity int NOT NULL,
+restorationAmount int NOT NULL,
+typeLimitation VARCHAR(255) NOT NULL,
+CONSTRAINT PK_ITEM_ID PRIMARY KEY(id),
+CONSTRAINT UQ_ITEM_NAME UNIQUE(name)
+);
+
+
+INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Health Potion', 10, 20, 'None');
 --password is 'dope'
 INSERT INTO `user` (name, email, password, date_created, role) VALUES ('datboi', 'datboi@datemail.com', '$2a$12$t4QQoP18ZAb/8yKBnYOTPu5.hFU4mAJUy.pVJGhhzrEsC6un/OPXy', current_timestamp(), 1);
 COMMIT;
