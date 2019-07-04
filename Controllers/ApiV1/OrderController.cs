@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using PokeClinic.Models.Orders;
-
+using System.Transactions;
 
 
 namespace PokeClinic.Controllers.ApiV1
@@ -30,12 +30,14 @@ namespace PokeClinic.Controllers.ApiV1
         }
         
         [HttpPost]
-        public ActionResult<Order> Add()
+        public ActionResult<Order> Add([FromBody]IEnumerable<Models.Requests.OrderAdd> orderAdd)
         {
-            //datetime set on insert
             Order order = new Order();
-            if (order.Add())
+            //datetime set on insert
+            if (order.Add(orderAdd)){
                 return Ok(order);
+
+            }
             return BadRequest("Failed to create an order");
         }
 

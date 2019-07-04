@@ -8,4 +8,11 @@ namespace PokeClinic.Models.Requests
         public DateTime OrderDate { get; set; }
 
     }
+
+    public class OrderAdd
+    {
+        public Int64 OrderId { get; set; }
+        public Int64 ItemId { get; set; }
+        public int Quantity { get; set; }
+    } 
 }
