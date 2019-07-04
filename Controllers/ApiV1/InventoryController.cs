@@ -21,9 +21,7 @@ namespace PokeClinic.Controllers.ApiV1
         public ActionResult Get(string name)
         {
             return Json(Inventory.Get(name));
-        }
-
-        
+        }        
 
         // POST: api/inventory
         [HttpPost]
@@ -46,7 +44,7 @@ namespace PokeClinic.Controllers.ApiV1
             }
 
             return RedirectToAction("/");
-        };
+        }
 
 
     }
