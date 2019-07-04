@@ -25,7 +25,7 @@ namespace PokeClinic.Models
             };
             sql += ')';
             
-            Inventory[] availableItems = sqlRunner(sql);
+            Inventory[] availableItems = inventorySqlRunner(sql);
             foreach (Inventory item in availableItems)
             {
                 Console.WriteLine(item.Name + " "+ item.ItemQuantity);
@@ -42,12 +42,25 @@ namespace PokeClinic.Models
             return returnVal;
         }
 
-        public static Inventory[] sqlRunner(string sql){
+        public static Inventory[] inventorySqlRunner(string sql){
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try {
                     Inventory[] treatmentItems = conn.Query<Inventory>(sql).ToList().ToArray();
                     return treatmentItems;
+                }
+                catch{
+                    return null;
+                }
+            }
+        }
+
+        public static Schedule[] scheduleSqlRunner(string sql){
+            using (MySqlConnection conn = PokeDB.NewConnection())
+            {
+                try {
+                    Schedule[] schedule = conn.Query<Schedule>(sql).ToList().ToArray();
+                    return schedule;
                 }
                 catch{
                     return null;
