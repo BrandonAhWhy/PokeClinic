@@ -41,14 +41,14 @@ namespace PokeClinic.Controllers.ApiV1
 
 
         //DELETE: api/inventory
-        // [HttpDelete("{id}")]
-        // public ActionResult Delete(Int64 id){
-        //     var response = new Inventory();
-        //     if (response.Delete(id)){
-        //         return Json("Removed item: "+ id);
-        //     }
+        [HttpDelete("{name}")]
+        public async Task<ActionResult<bool>> Delete(string name){
+            Inventory = new Inventory();
+            if (await Inventory.Delete(name)){
+                return Json("Removed item: "+ name);
+            }
 
-        //     return RedirectToAction("/");
-        // }
+            return RedirectToAction("/");
+        }
     }
 }

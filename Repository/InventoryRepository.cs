@@ -15,7 +15,6 @@ namespace PokeClinic.Repository {
     {
          public async Task<bool> AddOrUpdate(Inventory _inventory)
         {
-            string sqlFind = "SELECT * from inventory where name = @Name";
             string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
             string sql = "INSERT INTO inventory (name, itemQuantity, restorationAmount, typeLimitation) VALUES (@Name, @ItemQuantity, @RestorationAmount, @TypeLimitation )";
 
@@ -26,16 +25,17 @@ namespace PokeClinic.Repository {
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try {
-                    inventory = await conn.QueryFirstAsync<Inventory>(sqlFind, _inventory);
+                    inventory = await Find(_inventory.Name);
                     if (inventory != null) {
                         inventory.ItemQuantity += _inventory.ItemQuantity;
                         conn.Execute(sqlUpdate, inventory);
                         return success = true;
                     }
                 }
-                catch{
-                var affectedRows = conn.Execute(sql, _inventory);
-                success = (affectedRows > 0) ? true : false;   
+                catch
+                {                                 
+                    var affectedRows = await conn.ExecuteAsync(sql, _inventory);
+                    success = (affectedRows > 0) ? true : false;   
                 }
             }
             return success;
@@ -64,22 +64,20 @@ namespace PokeClinic.Repository {
             }
         }
 
-         public bool Delete(Int64 id){
-            string sqlFind = "SELECT * from inventory  WHERE Id = @Id";
+         public async Task<bool> Delete(string name){
             string sqlDelete = "DELETE FROM inventory WHERE Id = @Id";
-            Inventory inventory = new Inventory();
             bool success = false;
+            Inventory inventory = new Inventory();
             using (MySqlConnection conn = PokeDB.NewConnection()){
-                try{
-                    inventory = conn.QueryFirst<Inventory>(sqlFind,new {Id = id});
-                    if(inventory != null){
-                        conn.Execute(sqlDelete, new {Id = id});
-                        return true;
-                    }
+                try
+                {
+                    inventory = await Find(name);
+                    var affectedRows = await conn.ExecuteAsync(sqlDelete, inventory);
+                    success = (affectedRows > 0) ? true : false;
                 }
-                catch{
-                    var affectedRows = conn.Execute(sqlDelete, this);
-                    success = (affectedRows > 0) ? true : false; 
+                catch
+                {
+                    return success;
                 }
             }
             return success;

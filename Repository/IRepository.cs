@@ -14,7 +14,9 @@ namespace PokeClinic.Repository
     public interface IRepository<T>
     {
         Task<bool> AddOrUpdate(T newEntity);
-        Task<T> Find(string Entity);
+        Task<T> Find(string name);
         Task<IEnumerable<T>> GetAll();
+
+        Task<bool> Delete(string name);
     }
 }

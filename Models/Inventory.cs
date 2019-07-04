@@ -37,5 +37,10 @@ namespace PokeClinic
         public async Task<Inventory> Find(string Name) {
             return await InventoryRepository.Find(Name);
         }
+
+        public async Task<bool> Delete(string name)
+        {
+            return await InventoryRepository.Delete(name);
+        }
     }   
 }
