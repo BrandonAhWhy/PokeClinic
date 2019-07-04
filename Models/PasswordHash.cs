@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using BCr = BCrypt.Net;
+using System;
 
 namespace PokeClinic.Models
 {
@@ -17,7 +18,13 @@ namespace PokeClinic.Models
 
 	    public static bool ValidatePassword(string password, string correctHash)
 	    {
-	        return BCr.BCrypt.Verify(password, correctHash);
+			try{
+				return BCr.BCrypt.Verify(password, correctHash);
+			} catch (Exception err){
+				Console.WriteLine(err.Message);
+				return false;
+			}
+	        
 	    }
 	}
 }
