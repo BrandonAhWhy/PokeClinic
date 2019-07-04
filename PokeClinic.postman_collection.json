@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3bbb81fb-3347-44ed-96d1-1fd2bafbe4e0",
+		"_postman_id": "53097b53-22de-4c56-b65c-91415df1b6fc",
 		"name": "PokeClinic",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8,29 +8,21 @@
 		{
 			"name": "Login",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
+						"value": "application/json",
 						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "user0",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "letmein",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "{\n\t\"Name\": \"user1\",\n\t\"Password\": \"letmein\"\n}\n"
 				},
 				"url": {
 					"raw": "https://localhost:5001/api/v1/user/login",
@@ -57,29 +49,13 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
+						"value": "application/json",
 						"type": "text"
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "user0",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "user0@mail.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "letmein",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "{\n\t\"Name\": \"user1\",\n\t\"Email\": \"user1@mail.com\",\n\t\"Password\": \"letmein\"\n}\n"
 				},
 				"url": {
 					"raw": "https://localhost:5001/api/v1/user/register",
@@ -93,6 +69,38 @@
 						"v1",
 						"user",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/user/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
 					]
 				}
 			},
@@ -114,6 +122,101 @@
 						"api",
 						"v1",
 						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inventory get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Inventory Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Items",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Name\": \"Greatball\",\r\n\t\"ItemQuantity\": \"10\",\r\n\t\"ItemPrice\": \"500\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/inventory?",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Greatball",
+							"disabled": true
+						},
+						{
+							"key": "itemQuantity",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "itemPrice",
+							"value": "300",
+							"disabled": true
+						}
 					]
 				}
 			},

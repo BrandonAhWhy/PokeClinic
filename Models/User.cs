@@ -5,17 +5,6 @@ using Newtonsoft.Json;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
-
-
-
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-
-
 namespace PokeClinic.Models
 {
 
@@ -43,6 +32,7 @@ namespace PokeClinic.Models
             string sql = "INSERT INTO user (name, email, password, date_created, role) VALUES (@Name, @Email, @Password, @DateCreated, @Role)";
             bool success = false;
 
+            this.Role = 1;
             this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
