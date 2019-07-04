@@ -10,9 +10,9 @@ namespace PokeClinic.Models
         public Schedule() {
             ScheduleRepository = new ScheduleRepository();
         }
-        public Int64 Id { get; set; }
-        public Int64 Day { get; set; }
-
+        public int id {get; set;}
+        public int day {get; set;}
+        public int numBookings {get; set;}
         public async Task<IEnumerable<Schedule>> GetAll() {
             return await ScheduleRepository.GetAll();
         }

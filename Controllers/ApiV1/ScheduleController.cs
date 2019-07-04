@@ -33,7 +33,7 @@ namespace PokeClinic.Controllers.ApiV1
         {
             Schedule = new Schedule();
             if (await Schedule.AddOrUpdate(schedule)) {
-                return Json("Added: " + schedule.Day);
+                return Json("Added: " + schedule.day);
             }
 
             return RedirectToAction("/");

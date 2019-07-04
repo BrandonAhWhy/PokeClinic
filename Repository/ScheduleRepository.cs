@@ -23,7 +23,7 @@ namespace PokeClinic.Repository
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 while(!foundSlot) {
-                     Int64 dayCount = await FindCount(_schedule.Day);
+                     Int64 dayCount = await FindCount(_schedule.day);
                     if(dayCount >= 3) {
                         break;
                     } else {
