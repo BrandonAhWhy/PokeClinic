@@ -35,7 +35,7 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
 
             RestorerDirector rd = new RestorerDirector(grassTreatmentBuilder);
 
-            switch ()
+            switch (pokemonType)
             {
                 case "grass":
                     rd.makeRestorer();
@@ -65,7 +65,5 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
                     return null;
             }
         }
-
-        public static 
     }
 }
