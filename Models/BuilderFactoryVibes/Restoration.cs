@@ -27,21 +27,18 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
             Console.WriteLine ("Water:\n", waterTreatment );
         }
 
-        public static string[] runTreatment(string type){
+        public static string[] getTreatmentItems(string type){
             switch(type){
                 case "grass":
                     return grassTreatment.getNeededItems();
                 case "fire":
-                    return grassTreatment.getNeededItems();
+                    return fireTreatment.getNeededItems();
                 case "water":
-                    Console.WriteLine("water");
-                    break;
+                    return waterTreatment.getNeededItems();
                 default:
-                    Console.WriteLine("invalid");
-                    break;
+                    return null;
 
             }
         }
-
     }
 }

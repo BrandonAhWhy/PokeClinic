@@ -12,7 +12,7 @@ namespace PokeClinic.Controllers.ApiV1
 
         [HttpGet("{type}")]
         public ActionResult getAvailability(string type){
-            return Json(TreatmentHandler.getAvailability(type));
+            return Json(TreatmentHandler.getAvailibleTreatment(type));
         }
     }
 }
