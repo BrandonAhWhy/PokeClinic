@@ -31,10 +31,8 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
             switch(type){
                 case "grass":
                     return grassTreatment.getNeededItems();
-                    
                 case "fire":
-                    Console.WriteLine("fire");
-                    break;
+                    return grassTreatment.getNeededItems();
                 case "water":
                     Console.WriteLine("water");
                     break;
