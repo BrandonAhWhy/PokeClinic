@@ -1,17 +1,17 @@
 namespace PokeClinic.Models.BuilderFactoryVibes
 {
     public class RestorerDirector{
-            private IRestoreBuilder restorerBuilder;
+            private ITreatmentPlanBuilder restorerBuilder;
 
-            public RestorerDirector(IRestoreBuilder builderRestorerFormat){
+            public RestorerDirector(ITreatmentPlanBuilder builderRestorerFormat){
                 this.restorerBuilder = builderRestorerFormat;
             }
 
-            public void setRestorerFormat(IRestoreBuilder builderRestorerFormat){
+            public void setRestorerFormat(ITreatmentPlanBuilder builderRestorerFormat){
                 this.restorerBuilder = builderRestorerFormat;
             }
 
-            public RestoreItem getRestoreItem(){
+            public ITreatment getTreatmentPlan(){
                 return this.restorerBuilder.getRestorer();
             }
 
