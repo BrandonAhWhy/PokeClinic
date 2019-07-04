@@ -20,7 +20,7 @@ namespace PokeClinic.Controllers.ApiV1
 
         [HttpGet("{name}")]
         public async Task<ActionResult<Inventory>> Get(string name)
-        {
+        { 
             return Ok(await Inventory.Find(name));
         }
 
@@ -30,6 +30,18 @@ namespace PokeClinic.Controllers.ApiV1
             if (await Inventory.AddOrUpdate(inventory)) {
                 return Json("Added: "+ inventory.Name);
             }
+            return RedirectToAction("/");
+        }
+
+
+        //DELETE: api/inventory
+        [HttpDelete("{id}")]
+        public ActionResult Delete(Int64 id){
+            var response = new Inventory();
+            if (response.Delete(id)){
+                return Json("Removed item: "+ id);
+            }
+
             return RedirectToAction("/");
         }
 
