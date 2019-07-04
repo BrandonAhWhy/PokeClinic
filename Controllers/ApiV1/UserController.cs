@@ -36,13 +36,12 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         [HttpPost("register")]
-        public ActionResult Register()
+        public ActionResult Register([FromBody]Models.Requests.UserRegister userRegister)
         {
-            Console.Write(ModelState);
             User user = new User {
-                Name = Request.Form["name"],
-                Email = Request.Form["email"],
-                Password = Request.Form["password"]
+                Name = userRegister.Name,
+                Email = userRegister.Email,
+                Password = userRegister.Password,
             };
             if (Models.User.GetByName(user.Name) == null){
                 user.hashPassword();
@@ -55,12 +54,12 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         [HttpPost("login")]
-        public ActionResult Login()
+        public ActionResult Login([FromBody]Models.Requests.UserLogin userLogin)
         {
-            User user = Models.User.GetByName(Request.Form["name"]);
+            User user = Models.User.GetByName(userLogin.Name);
             if (user == null)
                 return StatusCode(404, "Invalid username/password");
-            if (user.validatePassword(Request.Form["password"]))
+            if (user.validatePassword(userLogin.Password))
             {
                 //gen user token (null if failed)
                 user.Token = Models.TokenController.GenToken(user);
@@ -75,15 +74,15 @@ namespace PokeClinic.Controllers.ApiV1
         // PUT api/user/5
         [BearerTokenFilter]
         [HttpPut("{id}")]
-        public ActionResult<string> Update(int id)
+        public ActionResult<string> Update(int id, [FromBody]Models.Requests.UserUpdate userUpdate)
         {
             User user = Models.User.Get(id);
             if (user == null) {
                 return StatusCode(404, "Invalid user");
             }
 
-            user.Name = Request.Form["name"];
-            user.Email = Request.Form["email"];
+            user.Name = (userUpdate.Name != null) ? userUpdate.Name : user.Name;
+            user.Email = (userUpdate.Email != null) ? userUpdate.Email : user.Email;
             if (user.Update())
                 return Json(user);
             else

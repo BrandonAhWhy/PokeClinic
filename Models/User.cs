@@ -5,17 +5,6 @@ using Newtonsoft.Json;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
-
-
-
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-
-
 namespace PokeClinic.Models
 {
 
