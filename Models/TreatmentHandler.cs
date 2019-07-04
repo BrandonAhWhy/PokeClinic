@@ -10,14 +10,14 @@ namespace PokeClinic.Models
         public static ITreatment getAvailibleTreatment(string type) {
             ITreatment treatment = Restoration.getTreatment(type);
             string[] treatmentItems = treatment.getNeededItems();
-            string sql = "SELECT * FROM inventory WHERE name IN (";
+            string sql = "SELECT * FROM `inventory` WHERE name IN (";
             foreach (string item in treatmentItems)
             {
                 if (treatmentItems[0] != item)
                 {
                     sql += ',';
                 }
-                sql += item;
+                sql += "'"+ item + "'";
             };
             sql += ')';
 
