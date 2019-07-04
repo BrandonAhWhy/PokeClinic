@@ -41,16 +41,14 @@ namespace PokeClinic.Controllers.ApiV1
             return BadRequest("Failed to create an order");
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<string> Update(int id, [FromBody]Models.Requests.OrderUpdate orderUpdate)
+        [HttpPut("{id}/update")]
+        public ActionResult<string> Update(Int64 Id, [FromBody]IEnumerable<Models.Orders.ItemOrder> orderUpdate)
         {
-            Order order = Order.Get(id);
+            Order order = Order.Get(Id);
             if (order == null) {
                 return StatusCode(404, "Invalid order");
             }
-
-            order.OrderDate = (orderUpdate.OrderDate != null) ? orderUpdate.OrderDate : order.OrderDate;
-            if (order.Update())
+            if (order.Update(orderUpdate))
                 return Json(order);
             else
                 return BadRequest("Failed to update");

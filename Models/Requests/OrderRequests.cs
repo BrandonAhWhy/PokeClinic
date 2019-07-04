@@ -1,13 +1,8 @@
 using System;
+using System.Collections.Generic;
 
 namespace PokeClinic.Models.Requests
 {
-    public class OrderUpdate
-    {
-        public Int64 id { get; set; }
-        public DateTime OrderDate { get; set; }
-
-    }
 
     public class OrderAdd
     {

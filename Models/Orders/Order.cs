@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using PokeClinic.Models.Requests;
 
 
 namespace PokeClinic.Models.Orders
@@ -73,14 +74,30 @@ namespace PokeClinic.Models.Orders
         }
 
         //UPDATE
-        public bool Update()
+        public bool Update(IEnumerable<Models.Orders.ItemOrder> items)
         {
-            string sql = "UPDATE `order` SET order_date = @OrderDate";
+            string sql = "REPLACE INTO `item_order` (order_id,item_id, quantity) VALUES (@OrderID, @ItemId, @Quantity)";
+            // string sql = "INSERT INTO `item_order` (order_id,item_id, quantity) VALUES (@OrderID, @ItemId, @Quantity) ON DUPLICATE KEY UPDATE item_order SET quantity = @Quantity WHERE item_id = @ItemId AND order_id = @OrderId";
+            string sql2 = "UPDATE `order` SET order_date = @OrderDate WHERE id = @Id";
+     
             bool success = false;
+            this.OrderDate =  DateTime.Now;
+            this.ItemOrders = items;
+
+            var self = this;
+
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var affectedRows = conn.Execute(sql, this);
-                success = (affectedRows > 0) ? true : false;
+                conn.Open();
+                using (var transactionScope = conn.BeginTransaction())
+                {
+                    foreach(var item in ItemOrders){
+                        conn.Execute(sql, new {Quantity = item.Quantity, OrderId = this.Id, ItemId = item.ItemId});
+                    }
+                    conn.Execute(sql2, self);
+                    transactionScope.Commit();
+                    success = true;
+                }
             }
             return success;
         }
