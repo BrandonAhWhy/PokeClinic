@@ -3,24 +3,47 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Dapper;
+using Dapper.Contrib.Extensions;
+
+
+
+
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace PokeClinic.Models
 {
+
+    public enum USER_ROLE: int{
+        USER = 0,
+        ADMIN = 1
+    }
+
     public class User 
     {
         public Int64 Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
+        public string Email { get; set; }   
         [JsonIgnore]
         public string Password { get; set; }
         public DateTime DateCreated { get; set; }
+        [WriteAttribute(false)]
+        public string Token { get; set;}
+        public int Role {get; set;}
+
 
         // CREATE
         public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password, date_created) VALUES (@Name, @Email, @Password, @DateCreated)";
+            string sql = "INSERT INTO user (name, email, password, date_created, role) VALUES (@Name, @Email, @Password, @DateCreated, @Role)";
             bool success = false;
 
+            this.Role = 1;
             this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
@@ -79,7 +102,13 @@ namespace PokeClinic.Models
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                user = conn.QueryFirst<User>(sql, new { Id = id });
+                try{
+                    user = conn.QueryFirst<User>(sql, new { Id = id });
+                }catch(Exception err){
+                    Console.WriteLine(err.Message);
+                    return null;
+                }
+               
             }
             return user;
         }
@@ -91,7 +120,13 @@ namespace PokeClinic.Models
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                user = conn.QueryFirst<User>(sql, new { Name = name });
+                try{
+                    user = conn.QueryFirst<User>(sql, new { Name = name });
+                }catch(Exception err){
+                    Console.WriteLine(err.Message);
+                    return null;
+                }
+                
             }
             return user;
         }

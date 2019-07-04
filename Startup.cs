@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,12 @@ using PokeClinic.Models;
 using Microsoft.OpenApi.Models;
 
 
+using Microsoft.IdentityModel.Tokens;
+// using System.Text;
+ using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authentication;
 
 namespace PokeClinic
 {
@@ -23,6 +30,9 @@ namespace PokeClinic
         {
             Configuration = configuration;
             PokeDB._ConnectionString = Configuration.GetConnectionString("Default");
+            //use for debugging token validation
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+            PokeDB.Secret = Configuration.GetSection("AppSettings")["Secret"].ToString();
         }
 
         public IConfiguration Configuration { get; }
@@ -58,6 +68,7 @@ namespace PokeClinic
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

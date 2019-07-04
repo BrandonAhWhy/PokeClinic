@@ -21,4 +21,5 @@ namespace PokeClinic
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
     }
+
 }
