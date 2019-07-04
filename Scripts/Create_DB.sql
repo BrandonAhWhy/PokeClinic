@@ -1,8 +1,9 @@
 CREATE DATABASE pokeDB;
+USE pokeDB;
 CREATE USER 'Ash' IDENTIFIED BY 'letmein';
 GRANT ALL PRIVILEGES ON pokeDB.* TO 'Ash';
 
-USE pokeDB;
+
 
 CREATE TABLE user (
 id BIGINT NOT NULL AUTO_INCREMENT,
@@ -28,10 +29,18 @@ CONSTRAINT UQ_ITEM_NAME UNIQUE(name)
 
 CREATE TABLE `order`(
   id BIGINT NOT NULL AUTO_INCREMENT,
+  order_date DATETIME NOT NULL,
+  PRIMARY KEY(id)
+);
+
+
+CREATE TABLE `item_order`(
+  order_id BIGINT NOT NULL,
   item_id BIGINT NOT NULL,
   quantity INT NOT NULL,
-  PRIMARY KEY(id),
-  FOREIGN KEY(item_id) REFERENCES inventory(id)
+  PRIMARY KEY(order_id, item_id),
+  FOREIGN KEY(item_id) REFERENCES inventory(id),
+  FOREIGN KEY(order_id) REFERENCES `order`(id)
 );
 
 CREATE TABLE schedule(
@@ -40,6 +49,13 @@ CREATE TABLE schedule(
   PRIMARY KEY(id)
 );
 
+
+INSERT INTO `order` (order_date) VALUES (current_timestamp());
+
 INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Health Potion', 10, 20, 'None');
+INSERT INTO item_order (order_id, item_id, quantity) VALUES (1, 1, 5);
+
 INSERT INTO `user` (name, email, password, date_created, role) VALUES ('datboi', 'datboi@datemail.com', '$2a$12$t4QQoP18ZAb/8yKBnYOTPu5.hFU4mAJUy.pVJGhhzrEsC6un/OPXy', current_timestamp(), 1);
 COMMIT;
+
+select * from `order`;

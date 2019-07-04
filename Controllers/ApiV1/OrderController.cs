@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc; 
-using PokeClinic.Models;
+using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Dapper;
+using Dapper.Contrib.Extensions;
+using PokeClinic.Models.Orders;
 
 
 
@@ -13,28 +18,53 @@ namespace PokeClinic.Controllers.ApiV1
         // GET api/user
      
         [HttpGet]
-        public ActionResult<string> GetAll()
+        public ActionResult<IEnumerable<Order>> GetAll()
         {
-            return Ok("Todo");
+            return Ok(Order.GetAll(25,0));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Order> Get(int id)
         {
-            return Ok("Todo");
+            return Ok(Order.Get(id));
         }
         
-        [HttpPost("/place")]
-        public ActionResult<string> PlaceOrder()
+        [HttpPost]
+        public ActionResult<Order> Add()
         {
-            return Ok("Todo");
+            //datetime set on insert
+            Order order = new Order();
+            if (order.Add())
+                return Ok(order);
+            return BadRequest("Failed to create an order");
         }
 
-        [HttpPost("/receive")]
-        public ActionResult<string> ReceiveOrder()
+        [HttpPut("{id}")]
+        public ActionResult<string> Update(int id, [FromBody]Models.Requests.OrderUpdate orderUpdate)
         {
-            return Ok("Todo");
+            Order order = Order.Get(id);
+            if (order == null) {
+                return StatusCode(404, "Invalid order");
+            }
+
+            order.OrderDate = (orderUpdate.OrderDate != null) ? orderUpdate.OrderDate : order.OrderDate;
+            if (order.Update())
+                return Json(order);
+            else
+                return BadRequest("Failed to update");
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult<string> Delete(int id)
+        {
+            Order order = Order.Get(id);
+
+            if (order == null) {
+                return StatusCode(404, "Invalid user");
+            }
+
+            order.Delete();
+            return  StatusCode(200, "Order deleted successfully");
+        }
     }
 }
