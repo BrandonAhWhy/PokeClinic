@@ -18,25 +18,23 @@ namespace PokeClinic.Controllers.ApiV1
         // GET api/user
      
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult<IEnumerable<Models.User>> GetAll()
         {
             // For testing if you don't have a db setup
             //return Json(new List<User> {new User { Id = 1, Name = "Bridge", Email = "lol@no.co", Password = "******" },});
-            return Json(Models.User.GetAll(25, 0));
+            return Ok(Models.User.GetAll(25, 0));
         }
 
         // GET api/user/5
         [BearerTokenFilter]
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public ActionResult<Models.User> Get(int id)
         {
-            // Console.Write(test);
-            var test2=(HttpContext);
-            return Json(Models.User.Get(id));
+            return Ok(Models.User.Get(id));
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromBody]Models.Requests.UserRegister userRegister)
+        public ActionResult<Models.User> Register([FromBody]Models.Requests.UserRegister userRegister)
         {
             User user = new User {
                 Name = userRegister.Name,
@@ -46,7 +44,7 @@ namespace PokeClinic.Controllers.ApiV1
             if (Models.User.GetByName(user.Name) == null){
                 user.hashPassword();
                 if (user.Add())
-                    return Json(user);
+                    return Ok(user);
                 return (Json(new {Status = "Error", Message = "Something went wrong."}));
             }else{
                 return BadRequest("Username already exists");
@@ -54,7 +52,7 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody]Models.Requests.UserLogin userLogin)
+        public ActionResult<Models.User> Login([FromBody]Models.Requests.UserLogin userLogin)
         {
             User user = Models.User.GetByName(userLogin.Name);
             if (user == null)
@@ -64,7 +62,7 @@ namespace PokeClinic.Controllers.ApiV1
                 //gen user token (null if failed)
                 user.Token = Models.TokenController.GenToken(user);
                 // Create user session
-                return Json(user);
+                return Ok(user);
             }
             return StatusCode(401, "Invalid username/password");
         }
