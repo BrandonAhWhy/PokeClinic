@@ -45,6 +45,5 @@ namespace PokeClinic
             Console.WriteLine ("Water:", itemWater);
         }
     }
-<<<<<<< HEAD
 
 }
