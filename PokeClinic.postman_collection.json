@@ -22,7 +22,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Name\": \"user1\",\n\t\"Password\": \"letmein\"\n}\n"
+					"raw": "{\n\t\"Name\": \"datboi\",\n\t\"Password\": \"dope\"\n}\n"
 				},
 				"url": {
 					"raw": "https://localhost:5001/api/v1/user/login",
@@ -377,10 +377,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t[{\r\n\t\tItemId : 1,\r\n\t\tQuantity : 5\r\n\t},\r\n\t{\r\n\t\tItemId : 2,\r\n\t\tQuantity : 5\r\n\t}]\r\n}"
+					"raw": "[{\r\n\tItemId : 1,\r\n\tQuantity : 5\r\n},\r\n{\r\n\tItemId : 2,\r\n\tQuantity : 69\r\n}]\r\n"
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/v1/order/14/update",
+					"raw": "https://localhost:5001/api/v1/order/15/update",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -390,7 +390,7 @@
 						"api",
 						"v1",
 						"order",
-						"14",
+						"15",
 						"update"
 					]
 				}
