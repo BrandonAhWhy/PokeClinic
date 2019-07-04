@@ -56,6 +56,20 @@ namespace PokeClinic.Controllers.ApiV1
                 return BadRequest("Failed to update");
         }
 
+        [HttpPut("{id}/receive")]
+        public ActionResult<string> Receive(int id)
+        {
+            Order order = Order.Get(id);
+            if (order == null) {
+                return StatusCode(404, "Invalid order");
+            }
+
+            if (order.Receive())
+                return StatusCode(200, "Order Successfully received");
+            else
+                return BadRequest("Failed to update");
+        }
+
         [HttpDelete("{id}")]
         public ActionResult<string> Delete(int id)
         {

@@ -11,7 +11,7 @@ namespace PokeClinic.Models.Orders
     {
         public Int64 OrderId { get; set; }
 
-        public Int64 itemId {get; set;}
+        public Int64 ItemId {get; set;}
 
         public int Quantity {get; set;}
     }
