@@ -73,17 +73,36 @@ namespace PokeClinic.Controllers.ApiV1
         
 
         // PUT api/user/5
+        [BearerTokenFilter]
         [HttpPut("{id}")]
-        public ActionResult<string> Update(int id, [FromBody] string value)
+        public ActionResult<string> Update(int id)
         {
-            return "TODO";
+            User user = Models.User.Get(id);
+            if (user == null) {
+                return StatusCode(404, "Invalid user");
+            }
+
+            user.Name = Request.Form["name"];
+            user.Email = Request.Form["email"];
+            if (user.Update())
+                return Json(user);
+            else
+                return BadRequest("Failed to update");
         }
 
         // DELETE api/user/5
+        [BearerTokenFilter]
         [HttpDelete("{id}")]
         public ActionResult<string> Delete(int id)
         {
-            return "TODO";
+            User user = Models.User.Get(id);
+
+            if (user == null) {
+                return StatusCode(404, "Invalid user");
+            }
+
+            user.Delete();
+            return  StatusCode(204, "User deleted successfully");
         }
     }
 }

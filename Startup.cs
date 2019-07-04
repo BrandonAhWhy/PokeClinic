@@ -14,6 +14,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PokeClinic.Models;
 
+using Microsoft.IdentityModel.Tokens;
+// using System.Text;
+ using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authentication;
 
 using Microsoft.IdentityModel.Tokens;
 // using System.Text;
@@ -62,12 +68,10 @@ namespace PokeClinic
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
             // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
