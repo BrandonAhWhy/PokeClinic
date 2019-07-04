@@ -27,6 +27,32 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
             Console.WriteLine ("Water:\n", waterTreatment );
         }
 
+        public static ITreatment getTreatment(string pokemonType)
+        {
+            ITreatmentPlanBuilder grassTreatmentBuilder = new GrassTreatmentBuilder();
+            ITreatmentPlanBuilder fireTreatmentBuilder = new FireTreatmentBuilder();
+            ITreatmentPlanBuilder waterTreatmentBuilder = new WaterTreatmentBuilder();
+
+            RestorerDirector rd = new RestorerDirector(grassTreatmentBuilder);
+
+            switch ()
+            {
+                case "grass":
+                    rd.makeRestorer();
+                    return (rd.getTreatmentPlan());
+                case "fire":
+                    rd.setRestorerFormat(fireTreatmentBuilder);
+                    rd.makeRestorer();
+                    return (rd.getTreatmentPlan());
+                case "water":
+                    rd.setRestorerFormat(waterTreatmentBuilder);
+                    rd.makeRestorer();
+                    return (rd.getTreatmentPlan());
+                default:
+                    return null;
+            }
+        }
+
         public static string[] getTreatmentItems(string type){
             switch(type){
                 case "grass":
@@ -37,8 +63,9 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
                     return waterTreatment.getNeededItems();
                 default:
                     return null;
-
             }
         }
+
+        public static 
     }
 }
