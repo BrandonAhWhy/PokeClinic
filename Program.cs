@@ -48,6 +48,3 @@ namespace PokeClinic
 <<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> testing/Mikhail_Inventory-Read

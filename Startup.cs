@@ -56,15 +56,12 @@ namespace PokeClinic
                 app.UseHsts();
             }
 
-<<<<<<< HEAD
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
             // app.UseAuthentication();
-=======
->>>>>>> testing/Mikhail_Inventory-Read
             app.UseHttpsRedirection();
             app.UseMvc();
         }
