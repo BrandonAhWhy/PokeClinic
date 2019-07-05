@@ -34,7 +34,7 @@ namespace PokeClinic.Models
             {
                 bool contained = false;
                 foreach(Inventory invItem in availableItems){
-                    if(invItem.Name.Equals(item))
+                    if(invItem.Name.Equals(item) && invItem.ItemQuantity > 0)
                         contained = true;
                 }
                 
