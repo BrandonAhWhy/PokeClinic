@@ -15,6 +15,11 @@ namespace PokeClinic.Models
             string[] treatmentItems = restoration.getTreatmentItems(type);
             TreatmentReturn returnVal = new TreatmentReturn();
 
+            if(treatmentItems==null){
+                returnVal.available=false;
+                return returnVal;
+            }
+
 
             string sql = "SELECT * FROM `inventory` WHERE name IN (";
             foreach (string item in treatmentItems)
@@ -38,7 +43,6 @@ namespace PokeClinic.Models
                 
                 if (!contained)
                 {
-                    returnVal.available = false;
                     // Code to copy the old array of needed items and add another item -> should become a list
                     string[] newItems = new string[returnVal.items.Length + 1];
                     Array.Copy(returnVal.items, newItems, returnVal.items.Length);

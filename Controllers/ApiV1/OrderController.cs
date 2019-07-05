@@ -42,9 +42,9 @@ namespace PokeClinic.Controllers.ApiV1
         }
 
         [HttpPut("{id}/update")]
-        public ActionResult<string> Update(Int64 Id, [FromBody]IEnumerable<Models.Orders.ItemOrder> orderUpdate)
+        public ActionResult<string> Update(Int64 id, [FromBody]IEnumerable<Models.Orders.ItemOrder> orderUpdate)
         {
-            Order order = Order.Get(Id);
+            Order order = Order.Get(id);
             if (order == null) {
                 return StatusCode(404, "Invalid order");
             }
