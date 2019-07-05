@@ -57,7 +57,7 @@ namespace PokeClinic.Repository
         }
 
         public async Task<Int64> FindCount(Int64 Day) {
-            string sql = "COUNT day FROM schedule WHERE day = @Day";
+            string sql = "SELECT COUNT(day) FROM schedule WHERE day = @Day";
             Int64 count = 0;
 
             using(MySqlConnection conn = PokeDB.NewConnection()) {
