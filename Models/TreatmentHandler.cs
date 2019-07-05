@@ -3,7 +3,9 @@ using PokeClinic.Models.BuilderFactoryVibes;
 using System.Linq;
 using Dapper;
 using System;
-
+using PokeClinic.Repository;
+using PokeClinic.Models.Orders;
+using PokeClinic.Models.Requests;
 namespace PokeClinic.Models
 {
     public class TreatmentHandler
@@ -44,6 +46,18 @@ namespace PokeClinic.Models
                     Array.Copy(returnVal.items, newItems, returnVal.items.Length);
                     newItems[returnVal.items.Length] = item;
                     returnVal.items = newItems;
+
+                    //add item to db
+                    
+                    //order
+                    InventoryRepository invRepo = new InventoryRepository();
+                    Inventory inventory = invRepo.Find(item);
+                    OrderAdd orderAdd = new OrderAdd();
+                    orderAdd.ItemId = inventory.Id;
+                    orderAdd.Quantity = 9001;   //this is a business rule---- get off my back
+                                                //also... it's over 9000 (it's a pop-culture)
+                    Order order = new Order();
+                    order.Add(new OrderAdd[]{orderAdd});
                 }
             }
 

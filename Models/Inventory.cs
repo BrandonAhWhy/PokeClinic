@@ -19,21 +19,21 @@ namespace PokeClinic.Models
 
         public string TypeLimitation {get; set; }
 
-        public async Task<IEnumerable<Inventory>> GetAll() {
-            return await InventoryRepository.GetAll();
+        public IEnumerable<Inventory> GetAll() {
+            return  InventoryRepository.GetAll();
         }
 
-        public async Task<bool> AddOrUpdate(Inventory item) {
-            return await InventoryRepository.AddOrUpdate(item);
+        public bool AddOrUpdate(Inventory item) {
+            return  InventoryRepository.AddOrUpdate(item);
         }
 
-        public async Task<Inventory> Find(string Name) {
-            return await InventoryRepository.Find(Name);
+        public Inventory Find(string Name) {
+            return  InventoryRepository.Find(Name);
         }
 
-        public async Task<bool> Delete(string name)
+        public bool Delete(string name)
         {
-            return await InventoryRepository.Delete(name);
+            return  InventoryRepository.Delete(name);
         }
     }   
 }

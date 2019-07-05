@@ -14,25 +14,25 @@ namespace PokeClinic.Controllers.ApiV1
         private Schedule Schedule;
         // GET api/schedule
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetAll()
+        public ActionResult<IEnumerable<Schedule>> GetAll()
         {
             Schedule = new Schedule();
-            return Ok(await Schedule.GetAll());
+            return Ok( Schedule.GetAll());
         }
 
         [HttpGet("{day}")]
-        public async Task<ActionResult<Schedule>> Find(Int64 day)
+        public ActionResult<Schedule> Find(Int64 day)
         {
             Schedule = new Schedule();
-            return Ok(await Schedule.Find(day));
+            return Ok( Schedule.Find(day));
         }
 
         // PUT: api/schedule
         [HttpPut]
-        public async Task<ActionResult<bool>> Add([FromBody]Schedule schedule)
+        public ActionResult<bool> Add([FromBody]Schedule schedule)
         {
             Schedule = new Schedule();
-            if (await Schedule.AddOrUpdate(schedule)) {
+            if ( Schedule.AddOrUpdate(schedule)) {
                 return Json("Added: " + schedule.day);
             }
 
@@ -41,10 +41,10 @@ namespace PokeClinic.Controllers.ApiV1
 
         //DELETE: api/schedule
         [HttpDelete("{day}")]
-        public async Task<ActionResult<bool>> Delete(Int64 day)
+        public ActionResult<bool> Delete(Int64 day)
         {
             Schedule = new Schedule();
-            if(await Schedule.Delete(day)) {
+            if( Schedule.Delete(day)) {
                 return Json("Removed item: " + day);
             }
 

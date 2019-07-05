@@ -13,32 +13,32 @@ namespace PokeClinic.Models
         public int id {get; set;}
         public int day {get; set;}
         public int numBookings {get; set;}
-        public async Task<IEnumerable<Schedule>> GetAll() {
-            return await ScheduleRepository.GetAll();
+        public IEnumerable<Schedule> GetAll() {
+            return  ScheduleRepository.GetAll();
         }
 
-        public async Task<bool> AddOrUpdate(Schedule item) {
-            return await ScheduleRepository.AddOrUpdate(item);
+        public bool AddOrUpdate(Schedule item) {
+            return  ScheduleRepository.AddOrUpdate(item);
         }
 
-        public async Task<Schedule> Find(string name) {
-            return await ScheduleRepository.Find(name);
+        public Schedule Find(string name) {
+            return  ScheduleRepository.Find(name);
         }
 
-        public async Task<Schedule> Find(Int64 day) {
-            return await ScheduleRepository.Find(day);
+        public Schedule Find(Int64 day) {
+            return  ScheduleRepository.Find(day);
         }
 
-        public async Task<Int64> FindCount(Int64 day) {
-            return await ScheduleRepository.FindCount(day);
+        public Int64 FindCount(Int64 day) {
+            return  ScheduleRepository.FindCount(day);
         }
 
-        public async Task<bool> Delete(string name) {
-            return await ScheduleRepository.Delete(name);
+        public bool Delete(string name) {
+            return  ScheduleRepository.Delete(name);
         }
 
-        public async Task<bool> Delete(Int64 day) {
-            return await ScheduleRepository.Delete(day);
+        public bool Delete(Int64 day) {
+            return  ScheduleRepository.Delete(day);
         }
     }
 }

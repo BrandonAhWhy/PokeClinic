@@ -13,10 +13,10 @@ namespace PokeClinic.Repository
 {
     public interface IRepository<T>
     {
-        Task<bool> AddOrUpdate(T newEntity);
-        Task<T> Find(string name);
-        Task<IEnumerable<T>> GetAll();
+        bool AddOrUpdate(T newEntity);
+        T Find(string name);
+        IEnumerable<T> GetAll();
 
-        Task<bool> Delete(string name);
+        bool Delete(string name);
     }
 }

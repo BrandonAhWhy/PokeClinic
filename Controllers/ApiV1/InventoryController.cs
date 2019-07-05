@@ -14,25 +14,25 @@ namespace PokeClinic.Controllers.ApiV1
         private  Inventory Inventory;
         // GET api/inventory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventory>>> GetAll() 
+        public ActionResult<IEnumerable<Inventory>> GetAll() 
         {
             Inventory = new Inventory();
-            return Ok(await Inventory.GetAll());
+            return Ok( Inventory.GetAll());
         }
 
         [HttpGet("{name}")]
-        public async Task<ActionResult<Inventory>> Find(string name)
+        public ActionResult<Inventory> Find(string name)
         {
             Inventory = new Inventory();
-            return Ok(await Inventory.Find(name));
+            return Ok( Inventory.Find(name));
         }
 
         // PUT: api/inventory
         [HttpPut]
-        public async Task<ActionResult<bool>> Add([FromBody]Inventory inventory) 
+        public ActionResult<bool> Add([FromBody]Inventory inventory) 
         {
             Inventory = new Inventory();
-            if (await Inventory.AddOrUpdate(inventory)) {
+            if ( Inventory.AddOrUpdate(inventory)) {
                 return Json("Added: "+ inventory.Name);
             }
 
@@ -42,9 +42,9 @@ namespace PokeClinic.Controllers.ApiV1
 
         //DELETE: api/inventory
         [HttpDelete("{name}")]
-        public async Task<ActionResult<bool>> Delete(string name){
+        public ActionResult<bool> Delete(string name){
             Inventory = new Inventory();
-            if (await Inventory.Delete(name)){
+            if ( Inventory.Delete(name)){
                 return Json("Removed item: "+ name);
             }
 

@@ -14,7 +14,7 @@ namespace PokeClinic.Repository {
 
     public class InventoryRepository :IRepository<Inventory> 
     {
-         public async Task<bool> AddOrUpdate(Inventory _inventory)
+         public bool AddOrUpdate(Inventory _inventory)
         {
             string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
             string sql = "INSERT INTO inventory (name, itemQuantity, restorationAmount, typeLimitation) VALUES (@Name, @ItemQuantity, @RestorationAmount, @TypeLimitation )";
@@ -26,7 +26,7 @@ namespace PokeClinic.Repository {
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try {
-                    inventory = await Find(_inventory.Name);
+                    inventory =  Find(_inventory.Name);
                     if (inventory != null) {
                         inventory.ItemQuantity += _inventory.ItemQuantity;
                         conn.Execute(sqlUpdate, inventory);
@@ -35,45 +35,45 @@ namespace PokeClinic.Repository {
                 }
                 catch
                 {                                 
-                    var affectedRows = await conn.ExecuteAsync(sql, _inventory);
+                    var affectedRows =  conn.Execute(sql, _inventory);
                     success = (affectedRows > 0) ? true : false;   
                 }
             }
             return success;
         }
         // READ
-        public async Task<Inventory> Find(string name)
+        public Inventory Find(string name)
         {
             string sql = "SELECT * FROM inventory WHERE name = @Name";
             Inventory Inventory = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                Inventory = await conn.QueryFirstAsync<Inventory>(sql, new { name = name });
+                Inventory =  conn.QueryFirst<Inventory>(sql, new { name = name });
             }
             return Inventory;
         }
 
-        public async Task<IEnumerable<Inventory>> GetAll()
+        public IEnumerable<Inventory> GetAll()
         {
             string sql = "SELECT * FROM inventory";
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var InventoryCollection =  await conn.QueryAsync<Inventory>(sql);
+                var InventoryCollection =   conn.Query<Inventory>(sql);
                 return InventoryCollection;
             }
         }
 
-         public async Task<bool> Delete(string name) {
+         public bool Delete(string name) {
             string sqlDelete = "DELETE FROM inventory WHERE Id = @Id";
             bool success = false;
             Inventory inventory = new Inventory();
             using (MySqlConnection conn = PokeDB.NewConnection()){
                 try
                 {
-                    inventory = await Find(name);
-                    var affectedRows = await conn.ExecuteAsync(sqlDelete, inventory);
+                    inventory =  Find(name);
+                    var affectedRows =  conn.Execute(sqlDelete, inventory);
                     success = (affectedRows > 0) ? true : false;
                 }
                 catch
