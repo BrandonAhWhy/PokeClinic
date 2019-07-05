@@ -65,7 +65,7 @@ namespace PokeClinic.Repository {
             }
         }
 
-         public async Task<bool> Delete(string name){
+         public async Task<bool> Delete(string name) {
             string sqlDelete = "DELETE FROM inventory WHERE Id = @Id";
             bool success = false;
             Inventory inventory = new Inventory();

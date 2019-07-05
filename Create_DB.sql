@@ -49,21 +49,17 @@ CREATE TABLE schedule(
   PRIMARY KEY(id)
 );
 
---Get soonest available booking
-SELECT day, COUNT(id) AS numBookings
-FROM schedule
-GROUP BY schedule.day
-HAVING numBookings < 3
-ORDER BY schedule.day ASC;
---Add a booking
-INSERT INTO schedule (day) VALUES (1);
-
 
 INSERT INTO `order` (order_date) VALUES (current_timestamp());
 
 INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Health Potion', 10, 20, 'None');
-INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('VeryCoolPotion', 69, 20, 'None');
-
+INSERT INTO `inventory` (name, itemQuantity, restorationAmount, typeLimitation) VALUES ('Moist', 10, 20, 'None');
 INSERT INTO item_order (order_id, item_id, quantity) VALUES (1, 1, 5);
+
+
 INSERT INTO `user` (name, email, password, date_created, role) VALUES ('datboi', 'datboi@datemail.com', '$2a$12$t4QQoP18ZAb/8yKBnYOTPu5.hFU4mAJUy.pVJGhhzrEsC6un/OPXy', current_timestamp(), 1);
 COMMIT;
+
+select * from `order`;
+
+

@@ -43,10 +43,15 @@ namespace PokeClinic.Models
                         userId = int.Parse(claim.Value);
                     }
                 } 
+
+                //check if user still exists
+                if (null == Models.User.Get(userId)){
+                    actionContext.Result =  new UnauthorizedResult();
+                }
+
                 //check if role is valid
                 if (authAdmin && (int)USER_ROLE.ADMIN != userRole){
                     actionContext.Result =  new UnauthorizedResult();
-
                 }
                 //check if user ID is valid
                 if (!authAdmin && authID && userId != reqID) { 

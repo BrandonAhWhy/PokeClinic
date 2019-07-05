@@ -89,7 +89,7 @@ namespace PokeClinic.Models
         }
 
         // READ
-        public static User Get(int id)
+        public static User Get(Int64 id)
         {
             string sql = "SELECT * FROM user WHERE id = @Id";
             User user = null;

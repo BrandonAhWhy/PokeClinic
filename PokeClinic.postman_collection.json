@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "53097b53-22de-4c56-b65c-91415df1b6fc",
+		"_postman_id": "27abefa4-3098-43ed-968a-55800106ff71",
 		"name": "PokeClinic",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -22,7 +22,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Name\": \"user1\",\n\t\"Password\": \"letmein\"\n}\n"
+					"raw": "{\n\t\"Name\": \"datboi\",\n\t\"Password\": \"dope\"\n}\n"
 				},
 				"url": {
 					"raw": "https://localhost:5001/api/v1/user/login",
@@ -217,6 +217,181 @@
 							"value": "300",
 							"disabled": true
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order/14",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order/place",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"place"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receive Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order/receive",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"receive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n\tItemId : 1,\r\n\tQuantity : 5\r\n},\r\n{\r\n\tItemId : 2,\r\n\tQuantity : 5\r\n}]"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n\tItemId : 1,\r\n\tQuantity : 5\r\n},\r\n{\r\n\tItemId : 2,\r\n\tQuantity : 69\r\n}]\r\n"
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/v1/order/15/update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"15",
+						"update"
 					]
 				}
 			},
