@@ -396,6 +396,29 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Next Available Booking",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/v1/treatment/next/available",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"v1",
+						"treatment",
+						"next",
+						"available"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

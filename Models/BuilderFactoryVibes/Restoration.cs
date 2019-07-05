@@ -5,62 +5,32 @@ namespace PokeClinic.Models.BuilderFactoryVibes {
         public static ITreatment grassTreatment;
         public static ITreatment fireTreatment;
         public static ITreatment waterTreatment;
-        public static void main(){
+        public Restoration () {
             ITreatmentPlanBuilder grassTreatmentBuilder = new GrassTreatmentBuilder ();
             ITreatmentPlanBuilder fireTreatmentBuilder = new FireTreatmentBuilder ();
             ITreatmentPlanBuilder waterTreatmentBuilder = new WaterTreatmentBuilder ();
 
             RestorerDirector rd = new RestorerDirector (grassTreatmentBuilder);
-            rd.makeRestorer ();
-            grassTreatment = rd.getTreatmentPlan();
+            rd.makeRestorer();
+            grassTreatment = rd.getTreatmentPlan ();
 
             rd.setRestorerFormat (fireTreatmentBuilder);
             rd.makeRestorer();
             fireTreatment = rd.getTreatmentPlan ();
 
             rd.setRestorerFormat (waterTreatmentBuilder);
-            rd.makeRestorer ();
+            rd.makeRestorer();
             waterTreatment = rd.getTreatmentPlan ();
-
-            Console.WriteLine ("Grass:\n", grassTreatment);
-            Console.WriteLine ("Fire:\n", fireTreatment);
-            Console.WriteLine ("Water:\n", waterTreatment );
         }
 
-        public static ITreatment getTreatment(string pokemonType)
-        {
-            ITreatmentPlanBuilder grassTreatmentBuilder = new GrassTreatmentBuilder();
-            ITreatmentPlanBuilder fireTreatmentBuilder = new FireTreatmentBuilder();
-            ITreatmentPlanBuilder waterTreatmentBuilder = new WaterTreatmentBuilder();
-
-            RestorerDirector rd = new RestorerDirector(grassTreatmentBuilder);
-
-            switch (pokemonType)
-            {
+        public string[] getTreatmentItems (string type) {
+            switch (type) {
                 case "grass":
-                    rd.makeRestorer();
-                    return (rd.getTreatmentPlan());
+                    return grassTreatment.getNeededItems ();
                 case "fire":
-                    rd.setRestorerFormat(fireTreatmentBuilder);
-                    rd.makeRestorer();
-                    return (rd.getTreatmentPlan());
+                    return fireTreatment.getNeededItems ();
                 case "water":
-                    rd.setRestorerFormat(waterTreatmentBuilder);
-                    rd.makeRestorer();
-                    return (rd.getTreatmentPlan());
-                default:
-                    return null;
-            }
-        }
-
-        public static string[] getTreatmentItems(string type){
-            switch(type){
-                case "grass":
-                    return grassTreatment.getNeededItems();
-                case "fire":
-                    return fireTreatment.getNeededItems();
-                case "water":
-                    return waterTreatment.getNeededItems();
+                    return waterTreatment.getNeededItems ();
                 default:
                     return null;
             }

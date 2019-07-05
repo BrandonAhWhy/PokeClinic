@@ -6,6 +6,7 @@ namespace PokeClinic.Models
 
         public TreatmentReturn(){
             this.available = true;
+            this.items = new string[0];
         }
     }
 }
