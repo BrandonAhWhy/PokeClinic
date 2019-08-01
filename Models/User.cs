@@ -9,28 +9,29 @@ using System.Data;
 namespace PokeClinic.Models
 {
 
-    public enum USER_ROLE: int{
+    public enum USER_ROLE : int
+    {
         USER = 0,
         ADMIN = 1
     }
 
-    public class User 
+    public class User
     {
         public Int64 CustomerID { get; set; }
         public string CustomerName { get; set; }
-        public string CustomerEmail { get; set; }   
+        public string CustomerEmail { get; set; }
         [JsonIgnore]
         public string CustomerPassword { get; set; }
         public DateTime DateCreated { get; set; }
         [WriteAttribute(false)]
-        public string Token { get; set;}
-        public int CustomerRole {get; set;} = 0;
+        public string Token { get; set; }
+        public int CustomerRole { get; set; } = 0;
 
 
         // CREATE
         public bool Add()
         {
-           
+
             bool success = false;
             this.CustomerRole = 1;
             this.DateCreated = DateTime.Now;
@@ -38,7 +39,7 @@ namespace PokeClinic.Models
             MySqlConnection conn = PokeDB.NewConnection();
             MySqlCommand cmd = new MySqlCommand();
 
-// This is once off
+            // This is once off
             try
             {
                 Console.WriteLine("Connecting to MySQL...");
@@ -53,7 +54,7 @@ namespace PokeClinic.Models
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine ("Error " + ex.Number + " has occurred: " + ex.Message);
+                Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
             }
             conn.Close();
             Console.WriteLine("Connection closed.");
@@ -83,9 +84,12 @@ namespace PokeClinic.Models
                 cmd.Parameters["@CustomerRole"].Direction = ParameterDirection.Input;
 
 
-                if (cmd.ExecuteNonQuery() == 1) {
+                if (cmd.ExecuteNonQuery() == 1)
+                {
                     success = true;
-                } else {
+                }
+                else
+                {
                     success = false;
                 };
             }
@@ -102,13 +106,64 @@ namespace PokeClinic.Models
         // UPDATE
         public bool Update()
         {
+
             string sql = "UPDATE customer SET customerName = @CustomerName, customerEmail = @CustomerEmail WHERE customerID = @CustomerID";
             bool success = false;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var affectedRows = conn.Execute(sql, this);
-                success = (affectedRows > 0) ? true : false;
+                MySqlCommand cmd = new MySqlCommand();
+
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+                    conn.Open();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "CREATE PROCEDURE PROC_UPDATE_USER ( CustomerName VARCHAR(255), CustomerEmail VARCHAR(255), CustomerID INTEGER) BEGIN UPDATE customer SET customerName = CustomerName, customerEmail = CustomerEmail WHERE customerID = CustomerID; END";
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
+                }
+                conn.Close();
+                Console.WriteLine("Connection closed.");
+
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+
+                    conn.Open();
+                    cmd.Connection = conn;
+
+                    cmd.CommandText = "PROC_UPDATE_USER";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@CustomerName", this.CustomerName);
+
+                    cmd.Parameters.AddWithValue("@CustomerEmail", this.CustomerEmail);
+
+
+                    cmd.Parameters.AddWithValue("@CustomerID", this.CustomerID);
+
+
+                    if (cmd.ExecuteNonQuery() == 1)
+                    {
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                    };
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
+                    success = false;
+                }
+                // var affectedRows = conn.Execute(sql, this);
+                // success = (affectedRows > 0) ? true : false;
             }
             return success;
         }
@@ -129,32 +184,81 @@ namespace PokeClinic.Models
         // DELETE
         public bool Delete()
         {
-            string sql = "DELETE FROM user WHERE id = @Id";
+            string sql = "DELETE FROM customer WHERE customerID = @CustomerID";
             bool success = false;
-
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                var affectedRows = conn.Execute(sql, this);
-                success = (affectedRows > 0) ? true : false;
+                MySqlCommand cmd = new MySqlCommand();
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+                    conn.Open();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "CREATE PROCEDURE PROC_DELETE_USER (CustomerID INTEGER) BEGIN DELETE FROM customer WHERE customerID = CustomerID; END";
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
+                }
+                conn.Close();
+                Console.WriteLine("Connection closed.");
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+
+                    conn.Open();
+                    cmd.Connection = conn;
+
+                    cmd.CommandText = "PROC_DELETE_USER";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@CustomerID", this.CustomerID);
+
+                    if (cmd.ExecuteNonQuery() == 1)
+                    {
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                    };
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
+                    success = false;
+                }
             }
+
+            // using (MySqlConnection conn = PokeDB.NewConnection())
+            // {
+            //     var affectedRows = conn.Execute(sql, this);
+            //     success = (affectedRows > 0) ? true : false;
+            // }
             return success;
         }
 
         // READ
-        public static User Get(Int64 id)
+        public static User Get(Int64 customerID)
         {
-            string sql = "SELECT * FROM customer WHERE id = @Id";
+            System.Console.WriteLine("Running");
+            string sql = "SELECT * FROM customer WHERE customerID = @CustomerID";
             User user = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                try{
-                    user = conn.QueryFirst<User>(sql, new { Id = id });
-                }catch(Exception err){
+                try
+                {
+                    user = conn.QueryFirst<User>(sql, new { CustomerID = customerID });
+                }
+                catch (Exception err)
+                {
                     Console.WriteLine(err.Message);
                     return null;
                 }
-               
+
             }
             return user;
         }
@@ -166,13 +270,16 @@ namespace PokeClinic.Models
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                try{
+                try
+                {
                     user = conn.QueryFirst<User>(sql, new { CustomerName = customerName });
-                }catch(Exception err){
+                }
+                catch (Exception err)
+                {
                     Console.WriteLine(err.Message);
                     return null;
                 }
-                
+
             }
             return user;
         }
