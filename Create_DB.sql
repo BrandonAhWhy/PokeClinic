@@ -1,7 +1,7 @@
 CREATE DATABASE pokeDB;
 USE pokeDB;
-CREATE USER 'Ash' IDENTIFIED BY 'letmein';
-GRANT ALL PRIVILEGES ON pokeDB.* TO 'Ash';
+-- CREATE USER 'Ash' IDENTIFIED BY 'letmein';
+-- GRANT ALL PRIVILEGES ON pokeDB.* TO 'Ash';
 
 
 

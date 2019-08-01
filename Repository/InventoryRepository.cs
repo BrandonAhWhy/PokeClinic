@@ -16,8 +16,8 @@ namespace PokeClinic.Repository {
     {
          public async Task<bool> AddOrUpdate(Inventory _inventory)
         {
-            string sqlUpdate = "UPDATE inventory SET name = @Name, itemQuantity = @ItemQuantity, restorationAmount = @RestorationAmount, typeLimitation = @TypeLimitation where Id = @Id";
-            string sql = "INSERT INTO inventory (name, itemQuantity, restorationAmount, typeLimitation) VALUES (@Name, @ItemQuantity, @RestorationAmount, @TypeLimitation )";
+            string sqlUpdate = "UPDATE itemInventory SET itemName = @ItemName, itemQuantity = @ItemQuantity, where itemID = @ItemID";
+            string sql = "INSERT INTO itemInventory (itemName, itemQuantity) VALUES (@ItemName, @ItemQuantity )";
 
             bool success = false;
 
@@ -26,7 +26,7 @@ namespace PokeClinic.Repository {
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try {
-                    inventory = await Find(_inventory.Name);
+                    inventory = await Find(_inventory.ItemName);
                     if (inventory != null) {
                         inventory.ItemQuantity += _inventory.ItemQuantity;
                         conn.Execute(sqlUpdate, inventory);
@@ -44,7 +44,7 @@ namespace PokeClinic.Repository {
         // READ
         public async Task<Inventory> Find(string name)
         {
-            string sql = "SELECT * FROM inventory WHERE name = @Name";
+            string sql = "SELECT * FROM itemInventory WHERE itemName = @ItemName";
             Inventory Inventory = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -56,7 +56,7 @@ namespace PokeClinic.Repository {
 
         public async Task<IEnumerable<Inventory>> GetAll()
         {
-            string sql = "SELECT * FROM inventory";
+            string sql = "SELECT * FROM itemInventory";
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {

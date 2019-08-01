@@ -33,7 +33,7 @@ namespace PokeClinic.Controllers.ApiV1
         {
             Inventory = new Inventory();
             if (await Inventory.AddOrUpdate(inventory)) {
-                return Json("Added: "+ inventory.Name);
+                return Json("Added: "+ inventory.ItemName);
             }
 
             return RedirectToAction("/");

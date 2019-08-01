@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using System.Data;
 
 namespace PokeClinic.Models
 {
@@ -15,34 +16,83 @@ namespace PokeClinic.Models
 
     public class User 
     {
-        public Int64 Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }   
+        public Int64 CustomerID { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }   
         [JsonIgnore]
-        public string Password { get; set; }
+        public string CustomerPassword { get; set; }
         public DateTime DateCreated { get; set; }
         [WriteAttribute(false)]
         public string Token { get; set;}
-        public int Role {get; set;} = 0;
+        public int CustomerRole {get; set;} = 0;
 
 
         // CREATE
         public bool Add()
         {
-            string sql = "INSERT INTO user (name, email, password, date_created, role) VALUES (@Name, @Email, @Password, @DateCreated, @Role)";
+            // string sql = "INSERT INTO customer (customerName, customerEmail, customerPassword, dateCreated, customerRole) VALUES (@CustomerName, @CustomerEmail, @CustomerPassword, @DateCreated, @CustomerRole)";
             bool success = false;
 
-            this.Role = 1;
+            this.CustomerRole = 1;
             this.DateCreated = DateTime.Now;
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
-                try {
-                    var affectedRows = conn.Execute(sql, this);
-                    success = (affectedRows > 0) ? true : false;
-                }catch(Exception err){
-                    Console.Write("SQL ADD ERR: " + err.Message);
-                    return false;
-                }
+                                     System.Console.WriteLine("test1");
+                        MySqlParameter[] pms = new MySqlParameter[5];
+                        pms[0] = new MySqlParameter("p_CustomerName", MySqlDbType.VarChar,50);
+                        pms[0].Value = "HEllo";
+
+                        pms[1] = new MySqlParameter("p_Email", MySqlDbType.VarChar, 50);
+                        pms[1].Value = "Help";
+
+                        pms[2] = new MySqlParameter("p_Password", MySqlDbType.VarChar, 50);
+                        pms[2].Value = "NO";
+                        pms[3] = new MySqlParameter("p_DateCreated", MySqlDbType.DateTime, 50);
+                        pms[3].Value = DateTime.Now;
+                        pms[4] = new MySqlParameter("p_Role", MySqlDbType.Int64);
+                        pms[4].Value = 1;
+
+                        MySqlCommand command = new MySqlCommand();
+
+                        command.Connection = conn;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "EXEC_ADD_USER";
+
+                        command.Parameters.AddRange(pms);
+
+                        conn.Open();
+                        if(command.ExecuteNonQuery() == 1)
+                        {
+                            System.Console.WriteLine("Yes");
+                        }
+                        else
+                        {
+                            System.Console.WriteLine("No");
+                        }
+                        conn.Close();
+
+                // using (MySqlCommand cmd = new MySqlCommand("EXEC_ADD_USER", conn)) {
+                //      cmd.CommandType =  CommandType.StoredProcedure;
+                //     //  cmd.Parameters.Add("p_CustomerName", MySqlDbType.VarChar).Value = "tessdgsdgdst";
+                //     //  cmd.Parameters.Add("p_Email", MySqlDbType.VarChar).Value = "tessdgsdgt";
+                //     //  cmd.Parameters.Add("p_Password", MySqlDbType.VarChar).Value = "tedsgdsgst";
+                //     //  cmd.Parameters.Add("p_DateCreated", MySqlDbType.DateTime).Value = DateTime.Now;
+                //     //  cmd.Parameters.Add("p_Role", MySqlDbType.Int64).Value = 1;
+                //      System.Console.WriteLine("test");
+                //     //  System.Console.WriteLine(cmd.Parameters.Clear());
+                //     // cmd.Parameters.Clear();
+                //     // cmd
+                //      conn.Open();
+                //      cmd.ExecuteNonQuery();
+                //      }
+
+                // try {
+                //     var affectedRows = conn.Execute(sql, this);
+                //     success = (affectedRows > 0) ? true : false;
+                // }catch(Exception err){
+                //     Console.Write("SQL ADD ERR: " + err.Message);
+                //     return false;
+                // }
             }
             return success;
         }
@@ -50,7 +100,7 @@ namespace PokeClinic.Models
         // UPDATE
         public bool Update()
         {
-            string sql = "UPDATE user SET name = @Name, email = @Email WHERE id = @Id";
+            string sql = "UPDATE customer SET customerName = @CustomerName, customerEmail = @CustomerEmail WHERE customerID = @CustomerID";
             bool success = false;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -91,7 +141,7 @@ namespace PokeClinic.Models
         // READ
         public static User Get(Int64 id)
         {
-            string sql = "SELECT * FROM user WHERE id = @Id";
+            string sql = "SELECT * FROM customer WHERE id = @Id";
             User user = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -107,15 +157,15 @@ namespace PokeClinic.Models
             return user;
         }
 
-        public static User GetByName(string name)
+        public static User GetByName(string customerName)
         {
-            string sql = "SELECT * FROM user WHERE name = @Name";
+            string sql = "SELECT * FROM customer WHERE customerName = @CustomerName";
             User user = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
             {
                 try{
-                    user = conn.QueryFirst<User>(sql, new { Name = name });
+                    user = conn.QueryFirst<User>(sql, new { CustomerName = customerName });
                 }catch(Exception err){
                     Console.WriteLine(err.Message);
                     return null;
@@ -127,7 +177,7 @@ namespace PokeClinic.Models
 
         public static IEnumerable<User> GetAll(Int64 limit, Int64 offset)
         {
-            string sql = "SELECT * FROM user LIMIT @Limit OFFSET @Offset ";
+            string sql = "SELECT * FROM customer LIMIT @Limit OFFSET @Offset ";
             IEnumerable<User> users = null;
 
             using (MySqlConnection conn = PokeDB.NewConnection())
@@ -139,12 +189,12 @@ namespace PokeClinic.Models
 
         public void hashPassword()
         {
-            this.Password = PasswordHash.HashPassword(this.Password);
+            this.CustomerPassword = PasswordHash.HashPassword(this.CustomerPassword);
         }
 
         public bool validatePassword(string password)
         {
-            return PasswordHash.ValidatePassword(password, this.Password);
+            return PasswordHash.ValidatePassword(password, this.CustomerPassword);
         }
     }
 }

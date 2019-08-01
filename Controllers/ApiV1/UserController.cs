@@ -32,11 +32,11 @@ namespace PokeClinic.Controllers.ApiV1
         public ActionResult<Models.User> Register([FromBody]Models.Requests.UserRegister userRegister)
         {
             User user = new User {
-                Name = userRegister.Name,
-                Email = userRegister.Email,
-                Password = userRegister.Password,
+                CustomerName = userRegister.Name,
+                CustomerEmail = userRegister.Email,
+                CustomerPassword = userRegister.Password,
             };
-            if (Models.User.GetByName(user.Name) == null){
+            if (Models.User.GetByName(user.CustomerName) == null){
                 user.hashPassword();
                 if (user.Add())
                     return Ok(user);
@@ -74,8 +74,8 @@ namespace PokeClinic.Controllers.ApiV1
                 return StatusCode(404, "Invalid user");
             }
 
-            user.Name = (userUpdate.Name != null) ? userUpdate.Name : user.Name;
-            user.Email = (userUpdate.Email != null) ? userUpdate.Email : user.Email;
+            user.CustomerName = (userUpdate.Name != null) ? userUpdate.Name : user.CustomerName;
+            user.CustomerEmail = (userUpdate.Email != null) ? userUpdate.Email : user.CustomerEmail;
             if (user.Update())
                 return Json(user);
             else

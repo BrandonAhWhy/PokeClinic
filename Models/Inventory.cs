@@ -12,8 +12,8 @@ namespace PokeClinic.Models
             InventoryRepository = new InventoryRepository();
         }
         
-        public Int64 Id { get; set; }
-        public string Name { get; set; }
+        public Int64 ItemID { get; set; }
+        public string ItemName { get; set; }
         public Int64 ItemQuantity { get; set; }
         public string RestorationAmount { get; set; }
 

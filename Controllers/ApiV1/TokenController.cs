@@ -125,10 +125,10 @@ namespace PokeClinic.Models
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim("Id", _user.Id.ToString()),
-                        new Claim("Email", _user.Email),
-                        new Claim("Name", _user.Name),
-                        new Claim("Role", _user.Role.ToString())
+                        new Claim("Id", _user.CustomerID.ToString()),
+                        new Claim("Email", _user.CustomerEmail),
+                        new Claim("Name", _user.CustomerName),
+                        new Claim("Role", _user.CustomerRole.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
