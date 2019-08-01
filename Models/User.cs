@@ -30,70 +30,72 @@ namespace PokeClinic.Models
         // CREATE
         public bool Add()
         {
-            // string sql = "INSERT INTO customer (customerName, customerEmail, customerPassword, dateCreated, customerRole) VALUES (@CustomerName, @CustomerEmail, @CustomerPassword, @DateCreated, @CustomerRole)";
+           
             bool success = false;
-
             this.CustomerRole = 1;
             this.DateCreated = DateTime.Now;
-            using (MySqlConnection conn = PokeDB.NewConnection())
+
+            MySqlConnection conn = PokeDB.NewConnection();
+            MySqlCommand cmd = new MySqlCommand();
+
+// This is once off
+            try
             {
-                                     System.Console.WriteLine("test1");
-                        MySqlParameter[] pms = new MySqlParameter[5];
-                        pms[0] = new MySqlParameter("p_CustomerName", MySqlDbType.VarChar,50);
-                        pms[0].Value = "HEllo";
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                cmd.Connection = conn;
+                cmd.CommandText = "CREATE PROCEDURE EXEC_ADD_USER(" +
+                                  "IN CustomerName VARCHAR(250), IN CustomerEmail VARCHAR(250), IN CustomerPassword VARCHAR(250), IN DateCreated DATETIME, IN CustomerRole INTEGER)" +
+                                  "BEGIN INSERT INTO customer(customerName, customerEmail, customerPassword, dateCreated, customerRole) " +
+                                  "VALUES(CustomerName, CustomerEmail, CustomerPassword, DateCreated, CustomerRole); END";
 
-                        pms[1] = new MySqlParameter("p_Email", MySqlDbType.VarChar, 50);
-                        pms[1].Value = "Help";
-
-                        pms[2] = new MySqlParameter("p_Password", MySqlDbType.VarChar, 50);
-                        pms[2].Value = "NO";
-                        pms[3] = new MySqlParameter("p_DateCreated", MySqlDbType.DateTime, 50);
-                        pms[3].Value = DateTime.Now;
-                        pms[4] = new MySqlParameter("p_Role", MySqlDbType.Int64);
-                        pms[4].Value = 1;
-
-                        MySqlCommand command = new MySqlCommand();
-
-                        command.Connection = conn;
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "EXEC_ADD_USER";
-
-                        command.Parameters.AddRange(pms);
-
-                        conn.Open();
-                        if(command.ExecuteNonQuery() == 1)
-                        {
-                            System.Console.WriteLine("Yes");
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("No");
-                        }
-                        conn.Close();
-
-                // using (MySqlCommand cmd = new MySqlCommand("EXEC_ADD_USER", conn)) {
-                //      cmd.CommandType =  CommandType.StoredProcedure;
-                //     //  cmd.Parameters.Add("p_CustomerName", MySqlDbType.VarChar).Value = "tessdgsdgdst";
-                //     //  cmd.Parameters.Add("p_Email", MySqlDbType.VarChar).Value = "tessdgsdgt";
-                //     //  cmd.Parameters.Add("p_Password", MySqlDbType.VarChar).Value = "tedsgdsgst";
-                //     //  cmd.Parameters.Add("p_DateCreated", MySqlDbType.DateTime).Value = DateTime.Now;
-                //     //  cmd.Parameters.Add("p_Role", MySqlDbType.Int64).Value = 1;
-                //      System.Console.WriteLine("test");
-                //     //  System.Console.WriteLine(cmd.Parameters.Clear());
-                //     // cmd.Parameters.Clear();
-                //     // cmd
-                //      conn.Open();
-                //      cmd.ExecuteNonQuery();
-                //      }
-
-                // try {
-                //     var affectedRows = conn.Execute(sql, this);
-                //     success = (affectedRows > 0) ? true : false;
-                // }catch(Exception err){
-                //     Console.Write("SQL ADD ERR: " + err.Message);
-                //     return false;
-                // }
+                cmd.ExecuteNonQuery();
             }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine ("Error " + ex.Number + " has occurred: " + ex.Message);
+            }
+            conn.Close();
+            Console.WriteLine("Connection closed.");
+
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                cmd.Connection = conn;
+
+                cmd.CommandText = "EXEC_ADD_USER";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@CustomerName", this.CustomerName);
+                cmd.Parameters["@CustomerName"].Direction = ParameterDirection.Input;
+
+                cmd.Parameters.AddWithValue("@CustomerEmail", this.CustomerEmail);
+                cmd.Parameters["@CustomerEmail"].Direction = ParameterDirection.Input;
+
+                cmd.Parameters.AddWithValue("@CustomerPassword", this.CustomerPassword);
+                cmd.Parameters["@CustomerPassword"].Direction = ParameterDirection.Input;
+
+                cmd.Parameters.AddWithValue("@DateCreated", this.DateCreated);
+                cmd.Parameters["@DateCreated"].Direction = ParameterDirection.Input;
+
+                cmd.Parameters.AddWithValue("@CustomerRole", this.CustomerRole);
+                cmd.Parameters["@CustomerRole"].Direction = ParameterDirection.Input;
+
+
+                if (cmd.ExecuteNonQuery() == 1) {
+                    success = true;
+                } else {
+                    success = false;
+                };
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Console.WriteLine("Error " + ex.Number + " has occurred: " + ex.Message);
+                success = false;
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
             return success;
         }
 
